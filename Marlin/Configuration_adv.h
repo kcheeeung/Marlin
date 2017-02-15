@@ -262,7 +262,7 @@
 #define Y_DUAL_STEPPER_DRIVERS
 #if ENABLED(Y_DUAL_STEPPER_DRIVERS)
   // Set true if the two Y motors need to rotate in opposite directions
-  #define INVERT_Y2_VS_Y_DIR true
+  #define INVERT_Y2_VS_Y_DIR false
 #endif
 
 // A single Z stepper driver is usually used to drive 2 stepper motors.

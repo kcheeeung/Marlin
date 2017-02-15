@@ -206,6 +206,10 @@
  * M364 - SCARA calibration: Move to cal-position PSIC (90 deg to Theta calibration position)
  * ************* SCARA End ***************
  *
+ * ************* CREA Specific
+ * M700 - Send pulse
+ * ************* CREA End ****************
+ *
  * ************ Custom codes - This can change to suit future G-code regulations
  * M100 - Watch Free Memory (For Debugging). (Requires M100_FREE_MEMORY_WATCHER)
  * M928 - Start SD logging: "M928 filename.gco". Stop with M29. (Requires SDSUPPORT)
@@ -7375,6 +7379,17 @@ inline void gcode_M503() {
 
 #endif // M605
 
+  inline void gcode_M700() {
+    static int pulse_usec = 500;
+    bool set = code_seen('S');
+    if (set) {
+      pulse_usec = code_value_int();
+    }
+    digitalWrite(FAN_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    digitalWrite(FAN_PIN, LOW);
+  }
+
 #if ENABLED(LIN_ADVANCE)
   /**
    * M905: Set advance factor
@@ -8602,6 +8617,10 @@ void process_next_command() {
           gcode_M605();
           break;
       #endif // DUAL_X_CARRIAGE
+
+        case 700:
+          gcode_M700();
+          break;
 
       #if ENABLED(LIN_ADVANCE)
         case 905: // M905: Set advance K factor.
