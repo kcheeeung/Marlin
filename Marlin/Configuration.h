@@ -501,7 +501,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 50, 10000 }
+#define DEFAULT_MAX_ACCELERATION      { 1000, 1000, 100, 10000 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -524,7 +524,7 @@
  */
 #define DEFAULT_XJERK                 5.0
 #define DEFAULT_YJERK                 5.0
-#define DEFAULT_ZJERK                  0.2
+#define DEFAULT_ZJERK                  0.4
 #define DEFAULT_EJERK                  2.0
 
 
@@ -688,7 +688,7 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR false
-#define INVERT_Y_DIR true
+#define INVERT_Y_DIR false
 #define INVERT_Z_DIR false
 
 // @section extruder
