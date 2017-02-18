@@ -207,7 +207,7 @@
  * ************* SCARA End ***************
  *
  * ************* CREA Specific
- * M700 - Send pulse
+ * M430 - Make pulse
  * ************* CREA End ****************
  *
  * ************ Custom codes - This can change to suit future G-code regulations
@@ -6908,6 +6908,18 @@ inline void gcode_M303() {
  */
 inline void gcode_M400() { stepper.synchronize(); }
 
+/* M430 
+*/
+inline void gcode_M430() {
+  #define DEFAULT_PULS_WIDTH  200
+  #define INIT_DELAY          200
+  uint16_t pulse_usec = code_seen('S') ? code_value_int() : DEFAULT_PULS_WIDTH;
+  delayMicroseconds(INIT_DELAY);     //  Is this needed?
+  WRITE(FAN_PIN, HIGH);
+  delayMicroseconds(pulse_usec);
+  WRITE(FAN_PIN, LOW);
+  delayMicroseconds(INIT_DELAY);
+}
 #if HAS_BED_PROBE
 
   /**
@@ -7378,17 +7390,6 @@ inline void gcode_M503() {
   }
 
 #endif // M605
-
-  inline void gcode_M700() {
-    static int pulse_usec = 500;
-    bool set = code_seen('S');
-    if (set) {
-      pulse_usec = code_value_int();
-    }
-    digitalWrite(FAN_PIN, HIGH);
-    delayMicroseconds(pulse_usec);
-    digitalWrite(FAN_PIN, LOW);
-  }
 
 #if ENABLED(LIN_ADVANCE)
   /**
@@ -8540,7 +8541,9 @@ void process_next_command() {
       case 400: // M400: Finish all moves
         gcode_M400();
         break;
-
+      case 430: // M430: Make pulse.
+        gcode_M430();
+        break;
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
           gcode_M401();
@@ -8617,10 +8620,6 @@ void process_next_command() {
           gcode_M605();
           break;
       #endif // DUAL_X_CARRIAGE
-
-        case 700:
-          gcode_M700();
-          break;
 
       #if ENABLED(LIN_ADVANCE)
         case 905: // M905: Set advance K factor.
