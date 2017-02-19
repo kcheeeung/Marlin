@@ -51,57 +51,57 @@
   #undef Z_MIN_PIN
   #undef Z_MAX_PIN
 
-  #define X_MIN_PIN         2
-  #define X_MAX_PIN         3
-  #define Y_MIN_PIN        15
-  #define Y_MAX_PIN        14
-  #define Z_MIN_PIN        19
-  #define Z_MAX_PIN        18
+  #define X_MIN_PIN         2 //AZTEEG X3 PRO
+  #define X_MAX_PIN         3 //AZTEEG X3 PRO
+  #define Y_MIN_PIN        15 //AZTEEG X3 PRO
+  #define Y_MAX_PIN        14 //AZTEEG X3 PRO
+  #define Z_MIN_PIN        19 //AZTEEG X3 PRO
+  #define Z_MAX_PIN        18 //AZTEEG X3 PRO
 #endif
 
 //
 // Z Probe (when not Z_MIN_PIN)
 //
 #ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN  18
+  #define Z_MIN_PROBE_PIN  18 //AZTEEG X3 PRO
 #endif
 
 //
 // Steppers
 //
-#define E2_STEP_PIN        23
-#define E2_DIR_PIN         25
-#define E2_ENABLE_PIN      40
+#define E2_STEP_PIN        23 //AZTEEG X3 PRO
+#define E2_DIR_PIN         25 //AZTEEG X3 PRO
+#define E2_ENABLE_PIN      40 //AZTEEG X3 PRO
 
-#define E3_STEP_PIN        27
-#define E3_DIR_PIN         29
-#define E3_ENABLE_PIN      41
+#define E3_STEP_PIN        27 //AZTEEG X3 PRO
+#define E3_DIR_PIN         29 //AZTEEG X3 PRO
+#define E3_ENABLE_PIN      41 //AZTEEG X3 PRO
 
-#define E4_STEP_PIN        43
-#define E4_DIR_PIN         37
-#define E4_ENABLE_PIN      42
+#define E4_STEP_PIN        43 //AZTEEG X3 PRO
+#define E4_DIR_PIN         37 //AZTEEG X3 PRO
+#define E4_ENABLE_PIN      42 //AZTEEG X3 PRO
 
 //
 // Temperature Sensors
 //
-#define TEMP_2_PIN         12   // Analog Input
-#define TEMP_3_PIN         11   // Analog Input
-#define TEMP_4_PIN         10   // Analog Input
-#define TC1                 4   // Analog Input (Thermo couple on Azteeg X3Pro)
-#define TC2                 5   // Analog Input (Thermo couple on Azteeg X3Pro)
+#define TEMP_2_PIN         12   // Analog Input   AZTEEG X3 PRO
+#define TEMP_3_PIN         11   // Analog Input   AZTEEG X3 PRO
+#define TEMP_4_PIN         10   // Analog Input   AZTEEG X3 PRO
+#define TC1                 4   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
+#define TC2                 5   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
 
 //
 // Heaters / Fans
 //
-#define HEATER_2_PIN       16
-#define HEATER_3_PIN       17
-#define HEATER_4_PIN        4
-#define HEATER_5_PIN        5
-#define HEATER_6_PIN        6
-#define HEATER_7_PIN       11
+#define HEATER_2_PIN       16 //AZTEEG X3 PRO
+#define HEATER_3_PIN       17 //AZTEEG X3 PRO
+#define HEATER_4_PIN        4 //AZTEEG X3 PRO
+#define HEATER_5_PIN        5 //AZTEEG X3 PRO
+#define HEATER_6_PIN        6 //AZTEEG X3 PRO
+#define HEATER_7_PIN       11 //AZTEEG X3 PRO
 
 #undef FAN_PIN
-#define FAN_PIN             6 // Part Cooling System
+#define FAN_PIN             6 // Part Cooling System   AZTEEG X3 PRO
 
 #define CONTROLLERFAN_PIN   4 // Pin used for the fan to cool motherboard (-1 to disable)
 
