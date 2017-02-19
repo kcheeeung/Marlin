@@ -6908,18 +6908,20 @@ inline void gcode_M303() {
  */
 inline void gcode_M400() { stepper.synchronize(); }
 
-/* M430 
-*/
+/** 
+ * M430: Make pulse
+ */
 inline void gcode_M430() {
   #define DEFAULT_PULS_WIDTH  200
-  #define INIT_DELAY          200
+  #define CHECK_DELAY          50
   uint16_t pulse_usec = code_seen('S') ? code_value_int() : DEFAULT_PULS_WIDTH;
-  delayMicroseconds(INIT_DELAY);     //  Is this needed?
+  delayMicroseconds(CHECK_DELAY);     //  Is this needed?
   WRITE(FAN_PIN, HIGH);
   delayMicroseconds(pulse_usec);
   WRITE(FAN_PIN, LOW);
-  delayMicroseconds(INIT_DELAY);
+  delayMicroseconds(CHECK_DELAY);
 }
+
 #if HAS_BED_PROBE
 
   /**
