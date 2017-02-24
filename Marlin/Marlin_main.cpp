@@ -6912,14 +6912,13 @@ inline void gcode_M400() { stepper.synchronize(); }
  * M430: Make pulse
  */
 inline void gcode_M430() {
-  #define DEFAULT_PULS_WIDTH  200
-  #define CHECK_DELAY          50
-  uint16_t pulse_usec = code_seen('S') ? code_value_int() : DEFAULT_PULS_WIDTH;
-  delayMicroseconds(CHECK_DELAY);     //  Is this needed?
+  uint16_t pulse_usec = 200;
+  if (code_seen('S')){
+    pulse_usec = code_value_int();
+  }
   WRITE(FAN_PIN, HIGH);
   delayMicroseconds(pulse_usec);
   WRITE(FAN_PIN, LOW);
-  delayMicroseconds(CHECK_DELAY);
 }
 
 #if HAS_BED_PROBE
@@ -8545,7 +8544,7 @@ void process_next_command() {
         break;
       case 430: // M430: Make pulse.
         gcode_M430();
-        break;
+        break;      
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
           gcode_M401();

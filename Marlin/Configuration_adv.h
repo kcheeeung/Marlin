@@ -1086,7 +1086,7 @@
 /**
  * Add M43 command for pins info and testing
  */
-//#define PINS_DEBUGGING
+#define PINS_DEBUGGING
 
 /**
  * Auto-report temperatures with M155 S<seconds>
