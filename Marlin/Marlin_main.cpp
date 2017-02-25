@@ -6916,9 +6916,9 @@ inline void gcode_M430() {
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
-  WRITE(FAN_PIN, HIGH);
+  WRITE(VALVE_1_PIN, HIGH);
   delayMicroseconds(pulse_usec);
-  WRITE(FAN_PIN, LOW);
+  WRITE(VALVE_1_PIN, LOW);
 }
 
 #if HAS_BED_PROBE

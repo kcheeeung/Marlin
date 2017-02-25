@@ -112,23 +112,22 @@
 #define TEST_2_PIN       16 // HE3 Not PWM
 #define TEST_3_PIN       17 // HE4 Not PWM
 #undef FIL_RUNOUT_PIN       // Pin 4
-#define TEST_4_PIN        4 // HE5 PWM
+#define REG_1_PIN        4 // HE5 PWM
 #undef SERVO2_PIN           // Pin 5
-#define TEST_5_PIN        5 // HE6 PWM
+#define REG_2_PIN        5 // HE6 PWM
 #undef SERVO1_PIN           // Pin 6
-#define TEST_6_PIN        6 // HE7 PWM
+#define REG_3_PIN        6 // HE7 PWM
 #define TEST_7_PIN       11 // HE8 TIED TO INTERNAL CLOCK
 
-//Need to test
 #define TEST_8_PIN        2 // X_MAX PWM
-#define TEST_9_PIN        7 // LCD PWM
-#define TEST_10_PIN      44 // LCD PWM
-#define TEST_11_PIN      45 // LCD PWM
+#define VALVE_1_PIN       7 // LCD PWM
+#define VALVE_2_PIN      44 // LCD PWM
+#define VALVE_3_PIN      45 // LCD PWM
 
 #undef FAN_PIN
 #define FAN_PIN             11   // Part Cooling System
 
-#define CONTROLLERFAN_PIN   -1//4 previously ; Pin used for the fan to cool motherboard (-1 to disable)
+#define CONTROLLERFAN_PIN   -1   //4 previously ; Pin used for the fan to cool motherboard (-1 to disable)
 
 // Fans/Water Pump to cool the hotend cool side.
 #define ORIG_E0_AUTO_FAN_PIN 5
