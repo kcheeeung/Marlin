@@ -859,6 +859,28 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
   return false;
 }
 
+/**
+ * Turn off heater at start
+ */
+void setup_heaterpins() {
+  pinMode(TEST_0_PIN, OUTPUT);
+  WRITE(TEST_0_PIN, HIGH);
+  pinMode(TEST_1_PIN, OUTPUT);
+  WRITE(TEST_1_PIN, HIGH);
+  pinMode(TEST_2_PIN, OUTPUT);
+  WRITE(TEST_2_PIN, HIGH);
+  pinMode(TEST_3_PIN, OUTPUT);
+  WRITE(TEST_3_PIN, HIGH);
+  pinMode(REG_1_PIN, OUTPUT);
+  WRITE(REG_1_PIN, HIGH);
+  pinMode(REG_2_PIN, OUTPUT);
+  WRITE(REG_2_PIN, HIGH);
+  pinMode(REG_3_PIN, OUTPUT);
+  WRITE(REG_3_PIN, HIGH);
+  pinMode(TEST_7_PIN, OUTPUT);
+  WRITE(TEST_7_PIN, HIGH);
+}
+
 void setup_killpin() {
   #if HAS_KILL
     SET_INPUT(KILL_PIN);
@@ -10203,6 +10225,7 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
+  setup_heaterpins();
 
   #ifdef DISABLE_JTAG
     // Disable JTAG on AT90USB chips to free up pins for IO
