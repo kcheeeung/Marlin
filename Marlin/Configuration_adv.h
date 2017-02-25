@@ -221,6 +221,7 @@
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
+#define E4_AUTO_FAN_PIN -1
 #define EXTRUDER_AUTO_FAN_TEMPERATURE 50
 #define EXTRUDER_AUTO_FAN_SPEED   255  // == full speed
 
@@ -767,6 +768,10 @@
   #define E3_SENSE_RESISTOR   91
   #define E3_MICROSTEPS       16
 
+  #define E4_MAX_CURRENT    1000
+  #define E4_SENSE_RESISTOR   91
+  #define E4_MICROSTEPS       16
+
 #endif
 
 // @section TMC2130
@@ -972,6 +977,14 @@
     #define E3_TBL            1
     #define E3_TOFF           8
 
+    #define E4_IHOLD         31
+    #define E4_IRUN          31
+    #define E4_IHOLDDELAY    15
+    #define E4_I_SCALE_ANALOG 1
+    #define E4_MRES          16
+    #define E4_TBL            1
+    #define E4_TOFF           8
+
   #endif // TMC2130_ADVANCED_CONFIGURATION
 
 #endif // HAVE_TMC2130DRIVER
@@ -1047,6 +1060,11 @@
   #define E3_K_VAL          50
   #define E3_OVERCURRENT  2000
   #define E3_STALLCURRENT 1500
+
+  #define E4_MICROSTEPS     16
+  #define E4_K_VAL          50
+  #define E4_OVERCURRENT  2000
+  #define E4_STALLCURRENT 1500
 
 #endif
 

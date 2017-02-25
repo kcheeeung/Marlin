@@ -9927,6 +9927,7 @@ void enable_all_steppers() {
   enable_e1();
   enable_e2();
   enable_e3();
+  enable_e4();
 }
 
 void disable_all_steppers() {
@@ -9937,6 +9938,7 @@ void disable_all_steppers() {
   disable_e1();
   disable_e2();
   disable_e3();
+  disable_e4();
 }
 
 /**
@@ -9980,6 +9982,7 @@ void manage_inactivity(bool ignore_stepper_queue/*=false*/) {
       disable_e1();
       disable_e2();
       disable_e3();
+      disable_e4();
     #endif
   }
 
