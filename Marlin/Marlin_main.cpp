@@ -885,9 +885,13 @@ void setup_heaterpins() {
  * CREA Turn off PWM Valve Pins at Start
  */
 void setup_PWMvalvepins() {
-  WRITE(PIN_8_PIN, LOW);
+  pinMode(TEST_8_PIN, OUTPUT);
+  WRITE(TEST_8_PIN, LOW);
+  pinMode(VALVE_1_PIN, OUTPUT);
   WRITE(VALVE_1_PIN, LOW);
+  pinMode(VALVE_2_PIN, OUTPUT);
   WRITE(VALVE_2_PIN, LOW);
+  pinMode(VALVE_3_PIN, OUTPUT);
   WRITE(VALVE_3_PIN, LOW);
 }
 
