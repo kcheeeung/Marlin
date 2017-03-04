@@ -895,6 +895,19 @@ void setup_PWMvalvepins() {
   WRITE(VALVE_3_PIN, LOW);
 }
 
+/**
+ * CREA Fast PWM
+ */
+#if ENABLED(FAST_PWM_FAN)
+  void FastPWM() {
+    setPwmFrequency(TEST_0_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(TEST_1_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_1_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_2_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_3_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+  }
+#endif
+
 void setup_killpin() {
   #if HAS_KILL
     SET_INPUT(KILL_PIN);
@@ -10247,6 +10260,10 @@ void setup() {
   setup_heaterpins();
   //CREA
   setup_PWMvalvepins();
+  //CREA
+  #if ENABLED(FAST_PWM_FAN)
+    FastPWM();
+  #endif
 
   #ifdef DISABLE_JTAG
     // Disable JTAG on AT90USB chips to free up pins for IO
