@@ -860,7 +860,7 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
 }
 
 /**
- * Turn off heater at start
+ * CREA Turn off Heaters at Start
  */
 void setup_heaterpins() {
   pinMode(TEST_0_PIN, OUTPUT);
@@ -879,6 +879,20 @@ void setup_heaterpins() {
   WRITE(REG_3_PIN, HIGH);
   pinMode(TEST_7_PIN, OUTPUT);
   WRITE(TEST_7_PIN, HIGH);
+}
+
+/**
+ * CREA Turn off PWM Valve Pins at Start
+ */
+void setup_PWMvalvepins() {
+  pinMode(TEST_8_PIN, OUTPUT);
+  WRITE(TEST_8_PIN, LOW);
+  pinMode(VALVE_1_PIN, OUTPUT);
+  WRITE(VALVE_1_PIN, LOW);
+  pinMode(VALVE_2_PIN, OUTPUT);
+  WRITE(VALVE_2_PIN, LOW);
+  pinMode(VALVE_3_PIN, OUTPUT);
+  WRITE(VALVE_3_PIN, LOW);
 }
 
 void setup_killpin() {
@@ -6931,10 +6945,11 @@ inline void gcode_M303() {
 inline void gcode_M400() { stepper.synchronize(); }
 
 /** 
- * M430: Make pulse
+ * M430: CREA Make pulse
  */
 inline void gcode_M430() {
-  uint16_t pulse_usec = 200;
+  pinMode(VALVE_1_PIN, OUTPUT);
+  uint16_t pulse_usec = 200; //default to 200 usecs
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
@@ -8564,7 +8579,7 @@ void process_next_command() {
       case 400: // M400: Finish all moves
         gcode_M400();
         break;
-      case 430: // M430: Make pulse.
+      case 430: // M430: CREA Make pulse.
         gcode_M430();
         break;      
       #if HAS_BED_PROBE
@@ -10228,7 +10243,10 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
+  //CREA 
   setup_heaterpins();
+  //CREA
+  setup_PWMvalvepins();
 
   #ifdef DISABLE_JTAG
     // Disable JTAG on AT90USB chips to free up pins for IO
