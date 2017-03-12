@@ -84,9 +84,14 @@
 //
 // Temperature Sensors
 //
-#define TEMP_2_PIN         12   // Analog Input   AZTEEG X3 PRO
-#define TEMP_3_PIN         11   // Analog Input   AZTEEG X3 PRO
-#define TEMP_4_PIN         10   // Analog Input   AZTEEG X3 PRO
+#undef TEMP_0_PIN
+#define TEMP_0_PIN         13   // Analog Input   AZTEEG X3 PRO
+#undef TEMP_1_PIN
+#define TEMP_1_PIN         13   // Analog Input   AZTEEG X3 PRO
+
+#define TEMP_2_PIN         13   //12   // Analog Input   AZTEEG X3 PRO
+#define TEMP_3_PIN         13   //11   // Analog Input   AZTEEG X3 PRO
+#define TEMP_4_PIN         13   //10   // Analog Input   AZTEEG X3 PRO
 #define TC1                 4   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
 #define TC2                 5   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
 
@@ -137,10 +142,10 @@
 #define CONTROLLERFAN_PIN   -1   // 4 previously ; Pin used for the fan to cool motherboard (-1 to disable)
 
 // Fans/Water Pump to cool the hotend cool side.
-#define ORIG_E0_AUTO_FAN_PIN 5
-#define ORIG_E1_AUTO_FAN_PIN 5
-#define ORIG_E2_AUTO_FAN_PIN 5
-#define ORIG_E3_AUTO_FAN_PIN 5
+#define ORIG_E0_AUTO_FAN_PIN 11 //5
+#define ORIG_E1_AUTO_FAN_PIN 11 //5
+#define ORIG_E2_AUTO_FAN_PIN 11 //5
+#define ORIG_E3_AUTO_FAN_PIN 11 //5
 
 //
 // LCD / Controller
