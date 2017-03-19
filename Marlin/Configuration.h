@@ -143,7 +143,7 @@
 
 // This defines the number of extruders
 // :[1, 2, 3, 4]
-#define EXTRUDERS 2
+#define EXTRUDERS 4
 
 // Enable if your E steppers or extruder gear ratios are not identical
 //#define DISTINCT_E_FACTORS
@@ -178,8 +178,8 @@
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
-#define HOTEND_OFFSET_X {0.0, 0.0} // (in mm) for each extruder, offset of the hotend on the X axis
-#define HOTEND_OFFSET_Y {0.0, 0.0}  // (in mm) for each extruder, offset of the hotend on the Y axis
+#define HOTEND_OFFSET_X {0.0, 10.0, 20.0, 30.0} // (in mm) for each extruder, offset of the hotend on the X axis
+#define HOTEND_OFFSET_Y {0.0,  0.0,  0.0,  0.0}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 /**
  * Select your power supply here. Use 0 if you haven't connected the PS_ON_PIN
@@ -251,8 +251,8 @@
  */
 #define TEMP_SENSOR_0 998
 #define TEMP_SENSOR_1 998
-// #define TEMP_SENSOR_2 998
-// #define TEMP_SENSOR_3 998
+#define TEMP_SENSOR_2 998
+#define TEMP_SENSOR_3 998
 #define TEMP_SENSOR_BED 11 //Heatbed
 
 // Dummy thermistor constant temperature readings, for use with 998 and 999

@@ -111,8 +111,10 @@
 #define HEATER_0_PIN     11 // Tie to Pin 11
 #undef HEATER_1_PIN
 #define HEATER_1_PIN     11 // Tie to Pin 11
-// #undef HEATER_2_PIN
-// #define HEATER_2_PIN     11 // Tie to Pin 11
+#undef HEATER_2_PIN
+#define HEATER_2_PIN     11 // Tie to Pin 11
+#undef HEATER_3_PIN
+#define HEATER_3_PIN     11 // Tie to Pin 11
 
 #define TEST_0_PIN       10 // HE1 PWM
 #define TEST_1_PIN        9 // HE2 PWM
