@@ -108,19 +108,18 @@
 // #define HEATER_7_PIN       11 //AZTEEG X3 PRO
 
 #undef HEATER_0_PIN
-#define HEATER_0_PIN     11 // Tie to Pin 11
 #undef HEATER_1_PIN
+#define HEATER_0_PIN     11 // Tie to Pin 11
 #define HEATER_1_PIN     11 // Tie to Pin 11
-#undef HEATER_2_PIN
 #define HEATER_2_PIN     11 // Tie to Pin 11
-#undef HEATER_3_PIN
 #define HEATER_3_PIN     11 // Tie to Pin 11
+
 
 #define TEST_0_PIN       10 // HE1 PWM
 #define TEST_1_PIN        9 // HE2 PWM
-
 #define TEST_2_PIN       16 // HE3 Not PWM
 #define TEST_3_PIN       17 // HE4 Not PWM
+
 
 //Pressure Regulator Pins
 #undef FIL_RUNOUT_PIN       // Pin 4
@@ -130,7 +129,9 @@
 #undef SERVO1_PIN           // Pin 6
 #define REG_3_PIN         6 // HE7 PWM
 
+
 #define TEST_7_PIN       11 // HE8 TIED TO INTERNAL CLOCK
+
 
 //Valve Pins
 #define TEST_8_PIN        2 // X_MAX PWM

@@ -206,9 +206,11 @@
  * M364 - SCARA calibration: Move to cal-position PSIC (90 deg to Theta calibration position)
  * ************* SCARA End ***************
  *
- * ************* CREA Specific
+ * ************* LBL/CREA Specific
  * M430 - Make pulse
- * ************* CREA End ****************
+ * M431 - Turn on test pin
+ * M432 - Turn off test pin 
+ * ************* LBL/CREA End ****************
  *
  * ************ Custom codes - This can change to suit future G-code regulations
  * M100 - Watch Free Memory (For Debugging). (Requires M100_FREE_MEMORY_WATCHER)
@@ -860,9 +862,9 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
 }
 
 /**
- * CREA Turn off Heaters at Start
+ * LBL/CREA Turn off Heaters at Start
  */
-void setup_heaterpins() {
+void setup_heaterpinsOFF() {
   pinMode(TEST_0_PIN, OUTPUT);
   WRITE(TEST_0_PIN, HIGH);
   pinMode(TEST_1_PIN, OUTPUT);
@@ -882,9 +884,9 @@ void setup_heaterpins() {
 }
 
 /**
- * CREA Turn off PWM Valve Pins at Start
+ * LBL/CREA Turn off PWM Valve Pins at Start
  */
-void setup_PWMvalvepins() {
+void setup_PWMvalvepinsOFF() {
   pinMode(TEST_8_PIN, OUTPUT);
   WRITE(TEST_8_PIN, LOW);
   pinMode(VALVE_1_PIN, OUTPUT);
@@ -896,7 +898,7 @@ void setup_PWMvalvepins() {
 }
 
 /**
- * CREA Fast PWM
+ * LBL/CREA Fast PWM
  */
 #if ENABLED(FAST_PWM_FAN)
   void FastPWM() {
@@ -6958,18 +6960,88 @@ inline void gcode_M303() {
 inline void gcode_M400() { stepper.synchronize(); }
 
 /** 
- * M430: CREA Make pulse
+ * M430: LBL/CREA Make pulse
  */
 inline void gcode_M430() {
-  pinMode(VALVE_1_PIN, OUTPUT);
   uint16_t pulse_usec = 200; //default to 200 usecs
+  uint16_t ValveNumber = 1;  //default to Valve 1
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
-  WRITE(VALVE_1_PIN, HIGH);
-  delayMicroseconds(pulse_usec);
-  WRITE(VALVE_1_PIN, LOW);
+  if (code_seen('V')){
+    ValveNumber = code_value_int();
+    if (ValveNumber == 1){
+      pinMode(VALVE_1_PIN, OUTPUT);
+      WRITE(VALVE_1_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(VALVE_1_PIN, LOW);
+    }
+    if (ValveNumber == 2){
+      pinMode(VALVE_2_PIN, OUTPUT);  
+      WRITE(VALVE_2_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(VALVE_2_PIN, LOW);
+    }
+    if (ValveNumber == 3){
+      pinMode(VALVE_3_PIN, OUTPUT);
+      WRITE(VALVE_3_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(VALVE_3_PIN, LOW);
+    }  
+  }
 }
+
+/** 
+ * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
+ */
+// inline void gcode_M431() {
+//   uint16_t TestPinNumber = 0;
+//   if (code_seen('T')){
+//     TestPinNumber = code_value_int();
+//     if (TestPinNumber = 0){
+//       pinMode(TEST_0_PIN, OUTPUT);
+//       WRITE(TEST_0_PIN, LOW);
+//     }
+//     if (TestPinNumber = 1){
+//       pinMode(TEST_1_PIN, OUTPUT);
+//       WRITE(TEST_1_PIN, LOW);
+//     }
+//     if (TestPinNumber = 2){
+//       pinMode(TEST_2_PIN, OUTPUT);
+//       WRITE(TEST_2_PIN, LOW);
+//     }
+//     if (TestPinNumber = 3){
+//       pinMode(TEST_3_PIN, OUTPUT);
+//       WRITE(TEST_3_PIN, LOW);
+//     }    
+//   }
+// }
+
+/** 
+ * M432: LBL/CREA Turn Off Test Pin (Using the Heaters/Fans so reverse logic)
+ */
+// inline void gcode_M432() {
+//   uint16_t TestPinNumber = 0;
+//   if (code_seen('T')){
+//     TestPinNumber = code_value_int();
+//     if (TestPinNumber = 0){
+//       pinMode(TEST_0_PIN, OUTPUT);
+//       WRITE(TEST_0_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 1){
+//       pinMode(TEST_1_PIN, OUTPUT);
+//       WRITE(TEST_1_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 2){
+//       pinMode(TEST_2_PIN, OUTPUT);
+//       WRITE(TEST_2_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 3){
+//       pinMode(TEST_3_PIN, OUTPUT);
+//       WRITE(TEST_3_PIN, HIGH);
+//     }    
+//   }
+// }
 
 #if HAS_BED_PROBE
 
@@ -8592,9 +8664,17 @@ void process_next_command() {
       case 400: // M400: Finish all moves
         gcode_M400();
         break;
-      case 430: // M430: CREA Make pulse.
+
+      case 430: // M430: LBL/CREA Turn on test pin
         gcode_M430();
-        break;      
+        break;
+      // case 431: // M431: LBL/CREA Turn on test pin
+      //   gcode_M431();
+      //   break;
+      // case 432: // M432: LBL/CREA Turn off test pin
+      //   gcode_M432();
+      //   break;
+
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
           gcode_M401();
@@ -10256,11 +10336,11 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
-  //CREA 
-  setup_heaterpins();
-  //CREA
-  setup_PWMvalvepins();
-  //CREA
+  //LBL/CREA 
+  setup_heaterpinsOFF();
+  //LBL/CREA
+  setup_PWMvalvepinsOFF();
+  //LBL/CREA
   #if ENABLED(FAST_PWM_FAN)
     FastPWM();
   #endif
