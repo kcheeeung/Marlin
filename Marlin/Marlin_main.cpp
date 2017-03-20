@@ -866,20 +866,21 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
  */
 void setup_heaterpinsOFF() {
   pinMode(TEST_0_PIN, OUTPUT);
-  WRITE(TEST_0_PIN, HIGH);
   pinMode(TEST_1_PIN, OUTPUT);
-  WRITE(TEST_1_PIN, HIGH);
   pinMode(TEST_2_PIN, OUTPUT);
-  WRITE(TEST_2_PIN, HIGH);
   pinMode(TEST_3_PIN, OUTPUT);
-  WRITE(TEST_3_PIN, HIGH);
   pinMode(REG_1_PIN, OUTPUT);
-  WRITE(REG_1_PIN, HIGH);
   pinMode(REG_2_PIN, OUTPUT);
-  WRITE(REG_2_PIN, HIGH);
   pinMode(REG_3_PIN, OUTPUT);
-  WRITE(REG_3_PIN, HIGH);
   pinMode(TEST_7_PIN, OUTPUT);
+
+  WRITE(TEST_0_PIN, HIGH);
+  WRITE(TEST_1_PIN, HIGH);
+  WRITE(TEST_2_PIN, HIGH);
+  WRITE(TEST_3_PIN, HIGH);
+  WRITE(REG_1_PIN, HIGH);
+  WRITE(REG_2_PIN, HIGH);
+  WRITE(REG_3_PIN, HIGH);
   WRITE(TEST_7_PIN, HIGH);
 }
 
@@ -888,12 +889,13 @@ void setup_heaterpinsOFF() {
  */
 void setup_PWMvalvepinsOFF() {
   pinMode(TEST_8_PIN, OUTPUT);
-  WRITE(TEST_8_PIN, LOW);
   pinMode(VALVE_1_PIN, OUTPUT);
-  WRITE(VALVE_1_PIN, LOW);
   pinMode(VALVE_2_PIN, OUTPUT);
-  WRITE(VALVE_2_PIN, LOW);
   pinMode(VALVE_3_PIN, OUTPUT);
+
+  WRITE(TEST_8_PIN, LOW);
+  WRITE(VALVE_1_PIN, LOW);
+  WRITE(VALVE_2_PIN, LOW);
   WRITE(VALVE_3_PIN, LOW);
 }
 
@@ -8665,7 +8667,7 @@ void process_next_command() {
         gcode_M400();
         break;
 
-      case 430: // M430: LBL/CREA Turn on test pin
+      case 430: // M430: LBL/CREA Make pulse
         gcode_M430();
         break;
       // case 431: // M431: LBL/CREA Turn on test pin
@@ -10338,9 +10340,7 @@ void stop() {
 void setup() {
   //LBL/CREA 
   setup_heaterpinsOFF();
-  //LBL/CREA
   setup_PWMvalvepinsOFF();
-  //LBL/CREA
   #if ENABLED(FAST_PWM_FAN)
     FastPWM();
   #endif
