@@ -866,38 +866,42 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
  * LBL/CREA Turn off Heaters at Start
  */
 void setup_heaterpinsOFF() {
-  pinMode(TEST_0_PIN, OUTPUT);
-  pinMode(TEST_1_PIN, OUTPUT);
-  pinMode(TEST_2_PIN, OUTPUT);
-  pinMode(TEST_3_PIN, OUTPUT);
-  pinMode(REG_1_PIN, OUTPUT);
-  pinMode(REG_2_PIN, OUTPUT);
-  pinMode(REG_3_PIN, OUTPUT);
-  pinMode(TEST_7_PIN, OUTPUT);
+  #if ENABLED(EnableALLSIGNAL)
+    pinMode(TEST_0_PIN, OUTPUT);
+    pinMode(TEST_1_PIN, OUTPUT);
+    pinMode(TEST_2_PIN, OUTPUT);
+    pinMode(TEST_3_PIN, OUTPUT);
+    pinMode(REG_1_PIN, OUTPUT);
+    pinMode(REG_2_PIN, OUTPUT);
+    pinMode(REG_3_PIN, OUTPUT);
+    pinMode(TEST_7_PIN, OUTPUT);
 
-  WRITE(TEST_0_PIN, HIGH);
-  WRITE(TEST_1_PIN, HIGH);
-  WRITE(TEST_2_PIN, HIGH);
-  WRITE(TEST_3_PIN, HIGH);
-  WRITE(REG_1_PIN, HIGH);
-  WRITE(REG_2_PIN, HIGH);
-  WRITE(REG_3_PIN, HIGH);
-  WRITE(TEST_7_PIN, HIGH);
+    WRITE(TEST_0_PIN, HIGH);
+    WRITE(TEST_1_PIN, HIGH);
+    WRITE(TEST_2_PIN, HIGH);
+    WRITE(TEST_3_PIN, HIGH);
+    WRITE(REG_1_PIN, HIGH);
+    WRITE(REG_2_PIN, HIGH);
+    WRITE(REG_3_PIN, HIGH);
+    WRITE(TEST_7_PIN, HIGH);
+  #endif
 }
 
 /**
  * LBL/CREA Turn off PWM Valve Pins at Start
  */
 void setup_PWMvalvepinsOFF() {
-  pinMode(TEST_8_PIN, OUTPUT);
-  pinMode(VALVE_1_PIN, OUTPUT);
-  pinMode(VALVE_2_PIN, OUTPUT);
-  pinMode(VALVE_3_PIN, OUTPUT);
+  #if ENABLED(EnableValves)
+    pinMode(TEST_8_PIN, OUTPUT);
+    pinMode(VALVE_1_PIN, OUTPUT);
+    pinMode(VALVE_2_PIN, OUTPUT);
+    pinMode(VALVE_3_PIN, OUTPUT);
 
-  WRITE(TEST_8_PIN, LOW);
-  WRITE(VALVE_1_PIN, LOW);
-  WRITE(VALVE_2_PIN, LOW);
-  WRITE(VALVE_3_PIN, LOW);
+    WRITE(TEST_8_PIN, LOW);
+    WRITE(VALVE_1_PIN, LOW);
+    WRITE(VALVE_2_PIN, LOW);
+    WRITE(VALVE_3_PIN, LOW);
+  #endif
 }
 
 /**
@@ -6965,34 +6969,36 @@ inline void gcode_M400() { stepper.synchronize(); }
 /** 
  * M430: LBL/CREA Make pulse
  */
-inline void gcode_M430() {
-  uint16_t pulse_usec = 200; //default to 200 usecs
-  uint16_t ValveNumber = 1;  //default to Valve 1
-  if (code_seen('S')){
-    pulse_usec = code_value_int();
-  }
-  if (code_seen('V')){
-    ValveNumber = code_value_int();
-    if (ValveNumber == 1){
-      pinMode(VALVE_1_PIN, OUTPUT);
-      WRITE(VALVE_1_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_1_PIN, LOW);
+#if ENABLED(EnableValves)
+  inline void gcode_M430() {
+    uint16_t pulse_usec = 200; //default to 200 usecs
+    uint16_t ValveNumber = 1;  //default to Valve 1
+    if (code_seen('S')){
+      pulse_usec = code_value_int();
     }
-    if (ValveNumber == 2){
-      pinMode(VALVE_2_PIN, OUTPUT);  
-      WRITE(VALVE_2_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_2_PIN, LOW);
+    if (code_seen('V')){
+      ValveNumber = code_value_int();
+      if (ValveNumber == 1){
+        pinMode(VALVE_1_PIN, OUTPUT);
+        WRITE(VALVE_1_PIN, HIGH);
+        delayMicroseconds(pulse_usec);
+        WRITE(VALVE_1_PIN, LOW);
+      }
+      if (ValveNumber == 2){
+        pinMode(VALVE_2_PIN, OUTPUT);  
+        WRITE(VALVE_2_PIN, HIGH);
+        delayMicroseconds(pulse_usec);
+        WRITE(VALVE_2_PIN, LOW);
+      }
+      if (ValveNumber == 3){
+        pinMode(VALVE_3_PIN, OUTPUT);
+        WRITE(VALVE_3_PIN, HIGH);
+        delayMicroseconds(pulse_usec);
+        WRITE(VALVE_3_PIN, LOW);
+      }  
     }
-    if (ValveNumber == 3){
-      pinMode(VALVE_3_PIN, OUTPUT);
-      WRITE(VALVE_3_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_3_PIN, LOW);
-    }  
   }
-}
+#endif
 
 /** 
  * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
@@ -8706,9 +8712,12 @@ void process_next_command() {
         gcode_M400();
         break;
 
-      case 430: // M430: LBL/CREA Make pulse
-        gcode_M430();
-        break;
+      #if ENABLED(EnableValves)
+        case 430: // M430: LBL/CREA Make pulse
+          gcode_M430();
+          break;
+      #endif
+
       // case 431: // M431: LBL/CREA Turn on test pin
       //   gcode_M431();
       //   break;
@@ -10380,9 +10389,15 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
-  //LBL/CREA 
-  setup_heaterpinsOFF();
-  setup_PWMvalvepinsOFF();
+  //LBL/CREA
+  #if ENABLED(EnableALLSIGNAL)
+    setup_heaterpinsOFF();
+  #endif
+
+  #if ENABLED(EnableValves)
+    setup_PWMvalvepinsOFF();
+  #endif
+
   #if ENABLED(FAST_PWM_FAN)
     FastPWM();
   #endif
