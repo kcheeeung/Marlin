@@ -7052,49 +7052,36 @@ inline void gcode_M430() {
 inline void gcode_M433() {
   uint16_t pulse_usec = 200; //default to 200 usecs
   uint16_t TestPinNumber = 0; //default to TEST_0_PIN
-
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
-
   if (code_seen('T')){
     TestPinNumber = code_value_int();
     if (TestPinNumber = 0){
-     pinMode(TEST_0_PIN, OUTPUT);
-     WRITE(TEST_0_PIN, LOW);
+      pinMode(TEST_0_PIN, OUTPUT);
+      WRITE(TEST_0_PIN, LOW);
+      delayMicroseconds(pulse_usec);
+      WRITE(TEST_0_PIN, HIGH);
     }
     if (TestPinNumber = 1){
-     pinMode(TEST_1_PIN, OUTPUT);
-     WRITE(TEST_1_PIN, LOW);
+      pinMode(TEST_1_PIN, OUTPUT);
+      WRITE(TEST_1_PIN, LOW);
+      delayMicroseconds(pulse_usec);
+      WRITE(TEST_1_PIN, HIGH);
     }
     if (TestPinNumber = 2){
-     pinMode(TEST_2_PIN, OUTPUT);
-     WRITE(TEST_2_PIN, LOW);
+      pinMode(TEST_2_PIN, OUTPUT);
+      WRITE(TEST_2_PIN, LOW);
+      delayMicroseconds(pulse_usec);
+      WRITE(TEST_2_PIN, HIGH);
     }
     if (TestPinNumber = 3){
-     pinMode(TEST_3_PIN, OUTPUT);
-     WRITE(TEST_3_PIN, LOW);
-    }    
+      pinMode(TEST_3_PIN, OUTPUT);
+      WRITE(TEST_3_PIN, LOW);
+      delayMicroseconds(pulse_usec);
+      WRITE(TEST_3_PIN, HIGH);
+    }
   }
-     
-  delayMicroseconds(pulse_usec);
-  
-  if (TestPinNumber = 0){
-     pinMode(TEST_0_PIN, OUTPUT);
-     WRITE(TEST_0_PIN, HIGH);
-   }
-   if (TestPinNumber = 1){
-     pinMode(TEST_1_PIN, OUTPUT);
-     WRITE(TEST_1_PIN, HIGH);
-   }
-   if (TestPinNumber = 2){
-     pinMode(TEST_2_PIN, OUTPUT);
-     WRITE(TEST_2_PIN, HIGH);
-   }
-   if (TestPinNumber = 3){
-     pinMode(TEST_3_PIN, OUTPUT);
-     WRITE(TEST_3_PIN, HIGH);
-   }
 }
 
 #if HAS_BED_PROBE
