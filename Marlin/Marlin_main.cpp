@@ -6966,31 +6966,30 @@ inline void gcode_M400() { stepper.synchronize(); }
  * M430: LBL/CREA Make pulse
  */
 inline void gcode_M430() {
-  uint16_t pulse_usec = 200; //default to 200 usecs
-  uint16_t ValveNumber = 1;  //default to Valve 1
+  uint16_t pulse_usec = 200; //Default to 200 usecs
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
-  if (code_seen('V')){
-    ValveNumber = code_value_int();
-    if (ValveNumber == 1){
-      pinMode(VALVE_1_PIN, OUTPUT);
-      WRITE(VALVE_1_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_1_PIN, LOW);
-    }
-    if (ValveNumber == 2){
-      pinMode(VALVE_2_PIN, OUTPUT);  
-      WRITE(VALVE_2_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_2_PIN, LOW);
-    }
-    if (ValveNumber == 3){
-      pinMode(VALVE_3_PIN, OUTPUT);
-      WRITE(VALVE_3_PIN, HIGH);
-      delayMicroseconds(pulse_usec);
-      WRITE(VALVE_3_PIN, LOW);
-    }  
+
+  if (!code_seen('V')) return; //You must pick a valve number
+  uint16_t ValveNumber = 1;    //Dummy valve number
+  if (ValveNumber == 1){
+    pinMode(VALVE_1_PIN, OUTPUT);
+    WRITE(VALVE_1_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_1_PIN, LOW);
+  }
+  if (ValveNumber == 2){
+    pinMode(VALVE_2_PIN, OUTPUT);  
+    WRITE(VALVE_2_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_2_PIN, LOW);
+  }
+  if (ValveNumber == 3){
+    pinMode(VALVE_3_PIN, OUTPUT);
+    WRITE(VALVE_3_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_3_PIN, LOW);
   }
 }
 
@@ -6998,26 +6997,7 @@ inline void gcode_M430() {
  * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
  */
 // inline void gcode_M431() {
-//   uint16_t TestPinNumber = 0;
-//   if (code_seen('T')){
-//     TestPinNumber = code_value_int();
-//     if (TestPinNumber = 0){
-//       pinMode(TEST_0_PIN, OUTPUT);
-//       WRITE(TEST_0_PIN, LOW);
-//     }
-//     if (TestPinNumber = 1){
-//       pinMode(TEST_1_PIN, OUTPUT);
-//       WRITE(TEST_1_PIN, LOW);
-//     }
-//     if (TestPinNumber = 2){
-//       pinMode(TEST_2_PIN, OUTPUT);
-//       WRITE(TEST_2_PIN, LOW);
-//     }
-//     if (TestPinNumber = 3){
-//       pinMode(TEST_3_PIN, OUTPUT);
-//       WRITE(TEST_3_PIN, LOW);
-//     }    
-//   }
+
 // }
 
 /** 
