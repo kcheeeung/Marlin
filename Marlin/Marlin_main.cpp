@@ -863,26 +863,26 @@ bool enqueue_and_echo_command(const char* cmd, bool say_ok/*=false*/) {
 }
 
 /**
- * LBL/CREA Turn off Heaters at Start
+ * LBL/CREA Turn off Heaters at Start/SIGNAL END OF THE HEATERS(- terminal)
  */
 void setup_heaterpinsOFF() {
-    pinMode(TEST_0_PIN, OUTPUT);
-    pinMode(TEST_1_PIN, OUTPUT);
-    pinMode(TEST_2_PIN, OUTPUT);
-    pinMode(TEST_3_PIN, OUTPUT);
+    // pinMode(TEST_0_PIN, OUTPUT);
+    // pinMode(TEST_1_PIN, OUTPUT);
+    // pinMode(TEST_2_PIN, OUTPUT);
+    // pinMode(TEST_3_PIN, OUTPUT);
     pinMode(REG_1_PIN, OUTPUT);
     pinMode(REG_2_PIN, OUTPUT);
     pinMode(REG_3_PIN, OUTPUT);
-    pinMode(TEST_7_PIN, OUTPUT);
+    // pinMode(TEST_7_PIN, OUTPUT);
 
-    WRITE(TEST_0_PIN, HIGH);
-    WRITE(TEST_1_PIN, HIGH);
-    WRITE(TEST_2_PIN, HIGH);
-    WRITE(TEST_3_PIN, HIGH);
+    // WRITE(TEST_0_PIN, HIGH);
+    // WRITE(TEST_1_PIN, HIGH);
+    // WRITE(TEST_2_PIN, HIGH);
+    // WRITE(TEST_3_PIN, HIGH);
     WRITE(REG_1_PIN, HIGH);
     WRITE(REG_2_PIN, HIGH);
     WRITE(REG_3_PIN, HIGH);
-    WRITE(TEST_7_PIN, HIGH);
+    // WRITE(TEST_7_PIN, HIGH);
 }
 
 /**
@@ -6996,9 +6996,9 @@ inline void gcode_M430() {
 /** 
  * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
  */
-// inline void gcode_M431() {
+inline void gcode_M431() {
 
-// }
+}
 
 /** 
  * M432: LBL/CREA Turn Off Test Pin (Using the Heaters/Fans so reverse logic)
