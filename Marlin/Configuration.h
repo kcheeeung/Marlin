@@ -529,10 +529,10 @@
  * When changing speed and direction, if the difference is less than the
  * value set here, it may happen instantaneously.
  */
-#define DEFAULT_XJERK                 2.0
-#define DEFAULT_YJERK                 2.0
-#define DEFAULT_ZJERK                 0.2
-#define DEFAULT_EJERK                 2.0
+#define DEFAULT_XJERK                 0.1
+#define DEFAULT_YJERK                 0.1
+#define DEFAULT_ZJERK                 0.1
+#define DEFAULT_EJERK                 0.1
 
 
 //===========================================================================

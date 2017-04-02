@@ -209,8 +209,9 @@
  * ************* LBL/CREA Specific
  * M430 - Make pulse
  * M431 - Turn on test pin
- * M432 - Turn off test pin 
- * M433 - Make pulse select test pin
+ * M432 - Turn off test pin
+ * M433 - Set Pressure Regulator (PSI)
+ * M434 - Make pulse select test pin
  * ************* LBL/CREA End ****************
  *
  * ************ Custom codes - This can change to suit future G-code regulations
@@ -6963,7 +6964,7 @@ inline void gcode_M303() {
 inline void gcode_M400() { stepper.synchronize(); }
 
 /** 
- * M430: LBL/CREA Make pulse
+ * M430: LBL/CREA Make pulse (Using the 5V PWMs)
  */
 inline void gcode_M430() {
   uint16_t pulse_usec = 200; //Default to 200 usecs
@@ -6994,7 +6995,7 @@ inline void gcode_M430() {
 }
 
 /** 
- * M431: LBL/CREA Turn On Test Pin (Heater/Fans)
+ * M431: LBL/CREA Turn On Test Pin (Using the heater/fans)
  */
 inline void gcode_M431() {
   if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
@@ -7018,10 +7019,10 @@ inline void gcode_M431() {
 }
 
 /** 
- * M432: LBL/CREA Turn Off Test Pin (Heater/Fans)
+ * M432: LBL/CREA Turn Off Test Pin (Using the heater/fans)
  */
 inline void gcode_M432() {
-  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn off
   uint16_t TestPinOFF = code_value_int();
   if (TestPinOFF == 0){
     pinMode(TEST_0_PIN, OUTPUT);
@@ -7041,10 +7042,39 @@ inline void gcode_M432() {
   }
 }
 
+/** 
+ * M433: Set Pressure Regulator (PSI) / Use the SIGNAL end (- terminal of heater)
+ */
+inline void gcode_M433(){
+  if(!code_seen('P')) return; //You must pick a PSI (Can accept decimals)
+  float airPSI = code_value_float();
+  if(airPSI < 0 || airPSI > 30) return; //PREVENT ACCIDENTAL PSI OVERLOAD TO VALVES
+
+  if(!code_seen('R')) return; //You must pick a REG_#_PIN to set
+  uint16_t PSIregulator = code_value_int();
+
+  float REQ_VOLTAGE = (airPSI / PSI_TO_SIGNAL_RATIO);
+  float REV_DUTYCYCLE_PSI = 255 - (255 * REQ_VOLTAGE/INPUT_HEATER_VOLTAGE);
+  int rdREV_DUTYCYCLE_PSI = round(REV_DUTYCYCLE_PSI);
+
+  if (PSIregulator == 1){
+    pinMode(REG_1_PIN, OUTPUT);
+    WRITE(REG_1_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+  if (PSIregulator == 2){
+    pinMode(REG_2_PIN, OUTPUT);
+    WRITE(REG_2_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+  if (PSIregulator == 3){
+    pinMode(REG_3_PIN, OUTPUT);
+    WRITE(REG_3_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+}
+
 // /** 
-//  * M433: LBL/CREA Make pulse select test pin
+//  * M434: LBL/CREA Make pulse select test pin
 //  */
-// inline void gcode_M433() {
+// inline void gcode_M434() {
 //   uint16_t pulse_usec = 200; //default to 200 usecs
 //   uint16_t TestPinNumber = 0; //default to TEST_0_PIN
 //   if (code_seen('S')){
@@ -8713,8 +8743,11 @@ void process_next_command() {
       case 432: // M432: Turn off test pin
         gcode_M432();
         break;
-      // case 433: // M433: Make pulse select test pin
-      //   gcode_M433();
+      case 433: // M433: Set Pressure Regulator (PSI)
+        gcode_M433();
+        break;
+      // case 434: // M434: Make pulse select test pin
+      //   gcode_M434();
       //   break;
 
 
