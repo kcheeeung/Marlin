@@ -51,65 +51,65 @@
   #undef Z_MIN_PIN
   #undef Z_MAX_PIN
 
-  #define X_MIN_PIN         2 //AZTEEG X3 PRO
-  #define X_MAX_PIN         3 //AZTEEG X3 PRO
-  #define Y_MIN_PIN        15 //AZTEEG X3 PRO
-  #define Y_MAX_PIN        14 //AZTEEG X3 PRO
-  #define Z_MIN_PIN        19 //AZTEEG X3 PRO
-  #define Z_MAX_PIN        18 //AZTEEG X3 PRO
+  #define X_MIN_PIN         2
+  #define X_MAX_PIN         3
+  #define Y_MIN_PIN        15
+  #define Y_MAX_PIN        14
+  #define Z_MIN_PIN        19
+  #define Z_MAX_PIN        18
 #endif
 
 //
 // Z Probe (when not Z_MIN_PIN)
 //
 #ifndef Z_MIN_PROBE_PIN
-  #define Z_MIN_PROBE_PIN  18 //AZTEEG X3 PRO
+  #define Z_MIN_PROBE_PIN  18
 #endif
 
 //
 // Steppers
 //
-#define E2_STEP_PIN        23 //AZTEEG X3 PRO
-#define E2_DIR_PIN         25 //AZTEEG X3 PRO
-#define E2_ENABLE_PIN      40 //AZTEEG X3 PRO
+#define E2_STEP_PIN        23
+#define E2_DIR_PIN         25
+#define E2_ENABLE_PIN      40
 
-#define E3_STEP_PIN        27 //AZTEEG X3 PRO
-#define E3_DIR_PIN         29 //AZTEEG X3 PRO
-#define E3_ENABLE_PIN      41 //AZTEEG X3 PRO
+#define E3_STEP_PIN        27
+#define E3_DIR_PIN         29
+#define E3_ENABLE_PIN      41
 
-#define E4_STEP_PIN        43 //AZTEEG X3 PRO
-#define E4_DIR_PIN         37 //AZTEEG X3 PRO
-#define E4_ENABLE_PIN      42 //AZTEEG X3 PRO
+#define E4_STEP_PIN        43
+#define E4_DIR_PIN         37
+#define E4_ENABLE_PIN      42
 
 //
 // Temperature Sensors
 //
 #undef TEMP_0_PIN
-#define TEMP_0_PIN         13   // Analog Input   AZTEEG X3 PRO
+#define TEMP_0_PIN         13   // Analog Input
 #undef TEMP_1_PIN
-#define TEMP_1_PIN         13   // Analog Input   AZTEEG X3 PRO
+#define TEMP_1_PIN         15   // Analog Input
 
-#define TEMP_2_PIN         13   //12   // Analog Input   AZTEEG X3 PRO
-#define TEMP_3_PIN         13   //11   // Analog Input   AZTEEG X3 PRO
-#define TEMP_4_PIN         13   //10   // Analog Input   AZTEEG X3 PRO
-#define TC1                 4   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
-#define TC2                 5   // Analog Input (Thermo couple on Azteeg X3Pro)   AZTEEG X3 PRO
+#define TEMP_2_PIN         12   // Analog Input
+#define TEMP_3_PIN         11   // Analog Input
+#define TEMP_4_PIN         10   // Analog Input
+#define TC1                 4   // Analog Input (Thermo couple on Azteeg X3Pro)
+#define TC2                 5   // Analog Input (Thermo couple on Azteeg X3Pro)
 
 //
 // Heaters / Fans
 //
 // MARLIN FIRMWARE PROTECTS ALL FAN_PINS AND HEATER_X_PINS
 //
-// #define HEATER_2_PIN       16 //AZTEEG X3 PRO
-// #define HEATER_3_PIN       17 //AZTEEG X3 PRO
-// #define HEATER_4_PIN        4 //AZTEEG X3 PRO
-// #define HEATER_5_PIN        5 //AZTEEG X3 PRO
-// #define HEATER_6_PIN        6 //AZTEEG X3 PRO
-// #define HEATER_7_PIN       11 //AZTEEG X3 PRO
+// #define HEATER_2_PIN       16
+// #define HEATER_3_PIN       17
+// #define HEATER_4_PIN        4
+// #define HEATER_5_PIN        5
+// #define HEATER_6_PIN        6
+// #define HEATER_7_PIN       11
 
 #undef HEATER_0_PIN
-#undef HEATER_1_PIN
 #define HEATER_0_PIN     11 // Tie to Pin 11
+#undef HEATER_1_PIN
 #define HEATER_1_PIN     11 // Tie to Pin 11
 #define HEATER_2_PIN     11 // Tie to Pin 11
 #define HEATER_3_PIN     11 // Tie to Pin 11
@@ -124,8 +124,10 @@
 //Pressure Regulator Pins
 #undef FIL_RUNOUT_PIN       // Pin 4
 #define REG_1_PIN         4 // HE5 PWM
+
 #undef SERVO2_PIN           // Pin 5
 #define REG_2_PIN         5 // HE6 PWM
+
 #undef SERVO1_PIN           // Pin 6
 #define REG_3_PIN         6 // HE7 PWM
 

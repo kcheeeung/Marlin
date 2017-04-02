@@ -21,14 +21,6 @@
  */
 
 /**
- * LBL/CREA Custom Functions
- */
-#define EnableValves    //Enable usage of microvalves using ALL LCD and XMAX pins
-
-#define EnableAllSIGNAL //Enable usage of all signal ports (- terminal of the HEATER/FAN pins USES REVERSE LOGIC)
-
-
-/**
  * Configuration_adv.h
  *
  * Advanced settings.
