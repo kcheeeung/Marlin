@@ -6972,7 +6972,7 @@ inline void gcode_M430() {
   }
 
   if (!code_seen('V')) return; //You must pick a valve number
-  uint16_t ValveNumber = 1;    //Dummy valve number
+  uint16_t ValveNumber = code_value_int();
   if (ValveNumber == 1){
     pinMode(VALVE_1_PIN, OUTPUT);
     WRITE(VALVE_1_PIN, HIGH);
@@ -6996,9 +6996,9 @@ inline void gcode_M430() {
 /** 
  * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
  */
-inline void gcode_M431() {
+// inline void gcode_M431() {
 
-}
+// }
 
 /** 
  * M432: LBL/CREA Turn Off Test Pin (Using the Heaters/Fans so reverse logic)
