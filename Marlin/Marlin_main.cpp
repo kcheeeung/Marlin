@@ -6994,75 +6994,90 @@ inline void gcode_M430() {
 }
 
 /** 
- * M431: LBL/CREA Turn On Test Pin (Using the Heaters/Fans so reverse logic)
+ * M431: LBL/CREA Turn On Test Pin (Heater/Fans)
  */
-// inline void gcode_M431() {
-
-// }
+inline void gcode_M431() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  uint16_t TestPinON = code_value_int();
+  if (TestPinON == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 255);
+  }
+  if (TestPinON == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 255);
+  }
+  if (TestPinON == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 255);
+  }
+  if (TestPinON == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 255);
+  }
+}
 
 /** 
- * M432: LBL/CREA Turn Off Test Pin (Using the Heaters/Fans so reverse logic)
+ * M432: LBL/CREA Turn Off Test Pin (Heater/Fans)
  */
-// inline void gcode_M432() {
-//   uint16_t TestPinNumber = 0;
+inline void gcode_M432() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  uint16_t TestPinOFF = code_value_int();
+  if (TestPinOFF == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 0);
+  }
+  if (TestPinOFF == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 0);
+  }
+  if (TestPinOFF == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 0);
+  }
+  if (TestPinOFF == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 0);
+  }
+}
+
+// /** 
+//  * M433: LBL/CREA Make pulse select test pin
+//  */
+// inline void gcode_M433() {
+//   uint16_t pulse_usec = 200; //default to 200 usecs
+//   uint16_t TestPinNumber = 0; //default to TEST_0_PIN
+//   if (code_seen('S')){
+//     pulse_usec = code_value_int();
+//   }
 //   if (code_seen('T')){
 //     TestPinNumber = code_value_int();
 //     if (TestPinNumber = 0){
 //       pinMode(TEST_0_PIN, OUTPUT);
+//       WRITE(TEST_0_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
 //       WRITE(TEST_0_PIN, HIGH);
 //     }
 //     if (TestPinNumber = 1){
 //       pinMode(TEST_1_PIN, OUTPUT);
+//       WRITE(TEST_1_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
 //       WRITE(TEST_1_PIN, HIGH);
 //     }
 //     if (TestPinNumber = 2){
 //       pinMode(TEST_2_PIN, OUTPUT);
+//       WRITE(TEST_2_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
 //       WRITE(TEST_2_PIN, HIGH);
 //     }
 //     if (TestPinNumber = 3){
 //       pinMode(TEST_3_PIN, OUTPUT);
+//       WRITE(TEST_3_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
 //       WRITE(TEST_3_PIN, HIGH);
-//     }    
+//     }
 //   }
 // }
-
-/** 
- * M433: LBL/CREA Make pulse select test pin
- */
-inline void gcode_M433() {
-  uint16_t pulse_usec = 200; //default to 200 usecs
-  uint16_t TestPinNumber = 0; //default to TEST_0_PIN
-  if (code_seen('S')){
-    pulse_usec = code_value_int();
-  }
-  if (code_seen('T')){
-    TestPinNumber = code_value_int();
-    if (TestPinNumber = 0){
-      pinMode(TEST_0_PIN, OUTPUT);
-      WRITE(TEST_0_PIN, LOW);
-      delayMicroseconds(pulse_usec);
-      WRITE(TEST_0_PIN, HIGH);
-    }
-    if (TestPinNumber = 1){
-      pinMode(TEST_1_PIN, OUTPUT);
-      WRITE(TEST_1_PIN, LOW);
-      delayMicroseconds(pulse_usec);
-      WRITE(TEST_1_PIN, HIGH);
-    }
-    if (TestPinNumber = 2){
-      pinMode(TEST_2_PIN, OUTPUT);
-      WRITE(TEST_2_PIN, LOW);
-      delayMicroseconds(pulse_usec);
-      WRITE(TEST_2_PIN, HIGH);
-    }
-    if (TestPinNumber = 3){
-      pinMode(TEST_3_PIN, OUTPUT);
-      WRITE(TEST_3_PIN, LOW);
-      delayMicroseconds(pulse_usec);
-      WRITE(TEST_3_PIN, HIGH);
-    }
-  }
-}
 
 #if HAS_BED_PROBE
 
@@ -8689,18 +8704,18 @@ void process_next_command() {
 
 
       //LBL/CREA Custom Functions
-      case 430: // M430: LBL/CREA Make pulse
+      case 430: // M430: Make pulse
         gcode_M430();
         break;
-      // case 431: // M431: LBL/CREA Turn on test pin
-      //   gcode_M431();
-      //   break;
-      // case 432: // M432: LBL/CREA Turn off test pin
-      //   gcode_M432();
-      //   break;
-      case 433: // M433: LBL/CREA Make pulse select test pin
-        gcode_M433();
+      case 431: // M431: Turn on test pin
+        gcode_M431();
         break;
+      case 432: // M432: Turn off test pin
+        gcode_M432();
+        break;
+      // case 433: // M433: Make pulse select test pin
+      //   gcode_M433();
+      //   break;
 
 
 
