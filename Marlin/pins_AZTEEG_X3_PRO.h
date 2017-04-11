@@ -24,6 +24,10 @@
  * AZTEEG_X3_PRO (Arduino Mega) pin assignments
  */
 
+#if HOTENDS > 5 || E_STEPPERS > 5
+  #error "Azteeg X3 Pro supports up to 5 hotends / E-steppers. Comment out this line to continue."
+#endif
+
 #define BOARD_NAME "Azteeg X3 Pro"
 
 #include "pins_RAMPS.h"
@@ -84,11 +88,6 @@
 //
 // Temperature Sensors
 //
-#undef TEMP_0_PIN
-#define TEMP_0_PIN         13   // Analog Input
-#undef TEMP_1_PIN
-#define TEMP_1_PIN         15   // Analog Input
-
 #define TEMP_2_PIN         12   // Analog Input
 #define TEMP_3_PIN         11   // Analog Input
 #define TEMP_4_PIN         10   // Analog Input
@@ -98,57 +97,23 @@
 //
 // Heaters / Fans
 //
-// MARLIN FIRMWARE PROTECTS ALL FAN_PINS AND HEATER_X_PINS
-//
-// #define HEATER_2_PIN       16
-// #define HEATER_3_PIN       17
-// #define HEATER_4_PIN        4
-// #define HEATER_5_PIN        5
-// #define HEATER_6_PIN        6
-// #define HEATER_7_PIN       11
-
-#undef HEATER_0_PIN
-#define HEATER_0_PIN     11 // Tie to Pin 11
-#undef HEATER_1_PIN
-#define HEATER_1_PIN     11 // Tie to Pin 11
-#define HEATER_2_PIN     11 // Tie to Pin 11
-#define HEATER_3_PIN     11 // Tie to Pin 11
-
-//General On/Off Pins
-#define TEST_0_PIN       10 // HE1 PWM
-#define TEST_1_PIN        9 // HE2 PWM
-#define TEST_2_PIN       16 // HE3 Not PWM
-#define TEST_3_PIN       17 // HE4 Not PWM
-
-//Pressure Regulator Pins
-#undef FIL_RUNOUT_PIN       // Pin 4
-#undef SERVO2_PIN           // Pin 5
-#undef SERVO1_PIN           // Pin 6
-#define REG_1_PIN         4 // HE5 PWM
-#define REG_2_PIN         5 // HE6 PWM
-#define REG_3_PIN         6 // HE7 PWM
-
-
-#define TEST_7_PIN       11 // HE8 TIED TO INTERNAL CLOCK
-
-
-//Valve Pins
-#define TEST_8_PIN        2 // X_MAX PWM
-#define VALVE_1_PIN       7 // LCD PWM
-#define VALVE_2_PIN      44 // LCD PWM
-#define VALVE_3_PIN      45 // LCD PWM
-
+#define HEATER_2_PIN       16
+#define HEATER_3_PIN       17
+#define HEATER_4_PIN        4
+#define HEATER_5_PIN        5
+#define HEATER_6_PIN        6
+#define HEATER_7_PIN       11
 
 #undef FAN_PIN
-#define FAN_PIN             11   // Part Cooling System
+#define FAN_PIN             6 // Part Cooling System
 
-#define CONTROLLERFAN_PIN   -1   // 4 previously ; Pin used for the fan to cool motherboard (-1 to disable)
+#define CONTROLLERFAN_PIN   4 // Pin used for the fan to cool motherboard (-1 to disable)
 
 // Fans/Water Pump to cool the hotend cool side.
-#define ORIG_E0_AUTO_FAN_PIN 11 //5
-#define ORIG_E1_AUTO_FAN_PIN 11 //5
-#define ORIG_E2_AUTO_FAN_PIN 11 //5
-#define ORIG_E3_AUTO_FAN_PIN 11 //5
+#define ORIG_E0_AUTO_FAN_PIN 5
+#define ORIG_E1_AUTO_FAN_PIN 5
+#define ORIG_E2_AUTO_FAN_PIN 5
+#define ORIG_E3_AUTO_FAN_PIN 5
 
 //
 // LCD / Controller

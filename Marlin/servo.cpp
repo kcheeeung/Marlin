@@ -126,7 +126,7 @@ static inline void handle_interrupts(timer16_Sequence_t timer, volatile uint16_t
     SIGNAL (TIMER5_COMPA_vect) { handle_interrupts(_timer5, &TCNT5, &OCR5A); }
   #endif
 
-#else //!WIRING
+#else // WIRING
 
   // Interrupt handlers for Wiring
   #if ENABLED(_useTimer1)
@@ -136,7 +136,7 @@ static inline void handle_interrupts(timer16_Sequence_t timer, volatile uint16_t
     void Timer3Service() { handle_interrupts(_timer3, &TCNT3, &OCR3A); }
   #endif
 
-#endif //!WIRING
+#endif // WIRING
 
 
 static void initISR(timer16_Sequence_t timer) {
@@ -227,7 +227,7 @@ static void finISR(timer16_Sequence_t timer) {
   #endif
 }
 
-static boolean isTimerActive(timer16_Sequence_t timer) {
+static bool isTimerActive(timer16_Sequence_t timer) {
   // returns true if any servo is active on this timer
   for (uint8_t channel = 0; channel < SERVOS_PER_TIMER; channel++) {
     if (SERVO(timer, channel).Pin.isActive)
