@@ -7648,13 +7648,13 @@ inline void gcode_M400() { stepper.synchronize(); }
  * M430: LBL/CREA Make pulse (Using the 5V PWMs)
  */
 inline void gcode_M430() {
-  uint16_t pulse_usec = 200; //Default to 200 usecs
+  int pulse_usec = 200; //Default to 200 usecs
   if (code_seen('S')){
     pulse_usec = code_value_int();
   }
 
   if (!code_seen('V')) return; //You must pick a valve number
-  uint16_t ValveNumber = code_value_int();
+  int ValveNumber = code_value_int();
   if (ValveNumber == 1){
     pinMode(VALVE_1_PIN, OUTPUT);
     WRITE(VALVE_1_PIN, HIGH);
@@ -7680,7 +7680,7 @@ inline void gcode_M430() {
  */
 inline void gcode_M431() {
   if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
-  uint16_t TestPinON = code_value_int();
+  int TestPinON = code_value_int();
   if (TestPinON == 0){
     pinMode(TEST_0_PIN, OUTPUT);
     WRITE(TEST_0_PIN, 255);
@@ -7704,7 +7704,7 @@ inline void gcode_M431() {
  */
 inline void gcode_M432() {
   if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn off
-  uint16_t TestPinOFF = code_value_int();
+  int TestPinOFF = code_value_int();
   if (TestPinOFF == 0){
     pinMode(TEST_0_PIN, OUTPUT);
     WRITE(TEST_0_PIN, 0);
@@ -7732,7 +7732,7 @@ inline void gcode_M433(){
   if(airPSI < 0 || airPSI > 30) return; //PREVENT ACCIDENTAL PSI OVERLOAD TO VALVES
 
   if(!code_seen('R')) return; //You must pick a REG_#_PIN to set
-  uint16_t PSIregulator = code_value_int();
+  int PSIregulator = code_value_int();
 
   float REQ_VOLTAGE = (airPSI / PSI_TO_SIGNAL_RATIO);
   float REV_DUTYCYCLE_PSI = 255 - (255 * REQ_VOLTAGE/INPUT_HEATER_VOLTAGE);
@@ -7756,8 +7756,8 @@ inline void gcode_M433(){
 //  * M434: LBL/CREA Make pulse select test pin
 //  */
 // inline void gcode_M434() {
-//   uint16_t pulse_usec = 200; //default to 200 usecs
-//   uint16_t TestPinNumber = 0; //default to TEST_0_PIN
+//   int pulse_usec = 200; //default to 200 usecs
+//   int TestPinNumber = 0; //default to TEST_0_PIN
 //   if (code_seen('S')){
 //     pulse_usec = code_value_int();
 //   }
