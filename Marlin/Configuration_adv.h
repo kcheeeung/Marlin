@@ -46,6 +46,14 @@
  */
 #define CONFIGURATION_ADV_H_VERSION 010100
 
+//===========================================================================
+//============================= LBL/CREA CUSTOM FUNCTIONS  ==================
+//===========================================================================
+
+//Pressure Regulator Calibration
+#define INPUT_HEATER_VOLTAGE 24 //Input voltage of power supply connecting to heater/fans (Your SIGNAL; - terminal)
+#define PSI_TO_SIGNAL_RATIO 13.0534 //SMC ITV0050 is linearly proportional 0.9mPa to 10V SIGNAL
+
 // @section temperature
 
 //===========================================================================
@@ -1076,7 +1084,7 @@
 /**
  * M43 - display pin status, watch pins for changes, watch endstops & toggle LED, Z servo probe test, toggle pins
  */
-#define PINS_DEBUGGING
+// #define PINS_DEBUGGING
 
 /**
  * Auto-report temperatures with M155 S<seconds>
