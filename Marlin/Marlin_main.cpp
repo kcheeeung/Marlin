@@ -206,6 +206,14 @@
  * M363 - SCARA calibration: Move to cal-position PsiB (90 deg calibration - steps per degree)
  * M364 - SCARA calibration: Move to cal-position PSIC (90 deg to Theta calibration position)
  *
+ * ************* LBL/CREA Specific
+ * M430 - Make pulse
+ * M431 - Turn on test pin
+ * M432 - Turn off test pin
+ * M433 - Set Pressure Regulator (PSI)
+ * M434 - Make pulse select test pin
+ * ************* LBL/CREA End ****************
+ *
  * ************ Custom codes - This can change to suit future G-code regulations
  * M100 - Watch Free Memory (For Debugging). (Requires M100_FREE_MEMORY_WATCHER)
  * M928 - Start SD logging: "M928 filename.gco". Stop with M29. (Requires SDSUPPORT)
@@ -684,6 +692,57 @@ void prepare_move_to_destination();
 
 void get_cartesian_from_steppers();
 void set_current_from_steppers_for_axis(const AxisEnum axis);
+
+/**
+ * LBL/CREA Turn off Heaters at Start/SIGNAL END OF THE HEATERS(- terminal)
+ */
+void setup_heaterpinsOFF() {
+    // pinMode(TEST_0_PIN, OUTPUT);
+    // pinMode(TEST_1_PIN, OUTPUT);
+    // pinMode(TEST_2_PIN, OUTPUT);
+    // pinMode(TEST_3_PIN, OUTPUT);
+    pinMode(REG_1_PIN, OUTPUT);
+    pinMode(REG_2_PIN, OUTPUT);
+    pinMode(REG_3_PIN, OUTPUT);
+    // pinMode(TEST_7_PIN, OUTPUT);
+
+    // WRITE(TEST_0_PIN, HIGH);
+    // WRITE(TEST_1_PIN, HIGH);
+    // WRITE(TEST_2_PIN, HIGH);
+    // WRITE(TEST_3_PIN, HIGH);
+    WRITE(REG_1_PIN, HIGH);
+    WRITE(REG_2_PIN, HIGH);
+    WRITE(REG_3_PIN, HIGH);
+    // WRITE(TEST_7_PIN, HIGH);
+}
+
+/**
+ * LBL/CREA Turn off PWM Valve Pins at Start
+ */
+void setup_PWMvalvepinsOFF() {
+    pinMode(TEST_8_PIN, OUTPUT);
+    pinMode(VALVE_1_PIN, OUTPUT);
+    pinMode(VALVE_2_PIN, OUTPUT);
+    pinMode(VALVE_3_PIN, OUTPUT);
+
+    WRITE(TEST_8_PIN, LOW);
+    WRITE(VALVE_1_PIN, LOW);
+    WRITE(VALVE_2_PIN, LOW);
+    WRITE(VALVE_3_PIN, LOW);
+}
+
+/**
+ * LBL/CREA Fast PWM
+ */
+#if ENABLED(FAST_PWM_FAN)
+  void FastPWM() {
+    setPwmFrequency(TEST_0_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(TEST_1_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_1_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_2_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+    setPwmFrequency(REG_3_PIN, 1); // No prescaling. Pwm frequency = F_CPU/256/8
+  }
+#endif
 
 #if ENABLED(ARC_SUPPORT)
   void plan_arc(float target[XYZE], float* offset, uint8_t clockwise);
@@ -7585,6 +7644,152 @@ inline void gcode_M303() {
  */
 inline void gcode_M400() { stepper.synchronize(); }
 
+/** 
+ * M430: LBL/CREA Make pulse (Using the 5V PWMs)
+ */
+inline void gcode_M430() {
+  uint16_t pulse_usec = 200; //Default to 200 usecs
+  if (code_seen('S')){
+    pulse_usec = code_value_int();
+  }
+
+  if (!code_seen('V')) return; //You must pick a valve number
+  uint16_t ValveNumber = code_value_int();
+  if (ValveNumber == 1){
+    pinMode(VALVE_1_PIN, OUTPUT);
+    WRITE(VALVE_1_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_1_PIN, LOW);
+  }
+  if (ValveNumber == 2){
+    pinMode(VALVE_2_PIN, OUTPUT);  
+    WRITE(VALVE_2_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_2_PIN, LOW);
+  }
+  if (ValveNumber == 3){
+    pinMode(VALVE_3_PIN, OUTPUT);
+    WRITE(VALVE_3_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_3_PIN, LOW);
+  }
+}
+
+/** 
+ * M431: LBL/CREA Turn On Test Pin (Using the heater/fans)
+ */
+inline void gcode_M431() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  uint16_t TestPinON = code_value_int();
+  if (TestPinON == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 255);
+  }
+  if (TestPinON == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 255);
+  }
+  if (TestPinON == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 255);
+  }
+  if (TestPinON == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 255);
+  }
+}
+
+/** 
+ * M432: LBL/CREA Turn Off Test Pin (Using the heater/fans)
+ */
+inline void gcode_M432() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn off
+  uint16_t TestPinOFF = code_value_int();
+  if (TestPinOFF == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 0);
+  }
+  if (TestPinOFF == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 0);
+  }
+  if (TestPinOFF == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 0);
+  }
+  if (TestPinOFF == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 0);
+  }
+}
+
+/** 
+ * M433: Set Pressure Regulator (PSI) / Use the SIGNAL end (- terminal of heater)
+ */
+inline void gcode_M433(){
+  if(!code_seen('P')) return; //You must pick a PSI (Can accept decimals)
+  float airPSI = code_value_float();
+  if(airPSI < 0 || airPSI > 30) return; //PREVENT ACCIDENTAL PSI OVERLOAD TO VALVES
+
+  if(!code_seen('R')) return; //You must pick a REG_#_PIN to set
+  uint16_t PSIregulator = code_value_int();
+
+  float REQ_VOLTAGE = (airPSI / PSI_TO_SIGNAL_RATIO);
+  float REV_DUTYCYCLE_PSI = 255 - (255 * REQ_VOLTAGE/INPUT_HEATER_VOLTAGE);
+  int rdREV_DUTYCYCLE_PSI = round(REV_DUTYCYCLE_PSI);
+
+  if (PSIregulator == 1){
+    pinMode(REG_1_PIN, OUTPUT);
+    WRITE(REG_1_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+  if (PSIregulator == 2){
+    pinMode(REG_2_PIN, OUTPUT);
+    WRITE(REG_2_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+  if (PSIregulator == 3){
+    pinMode(REG_3_PIN, OUTPUT);
+    WRITE(REG_3_PIN, rdREV_DUTYCYCLE_PSI);
+  }
+}
+
+// /** 
+//  * M434: LBL/CREA Make pulse select test pin
+//  */
+// inline void gcode_M434() {
+//   uint16_t pulse_usec = 200; //default to 200 usecs
+//   uint16_t TestPinNumber = 0; //default to TEST_0_PIN
+//   if (code_seen('S')){
+//     pulse_usec = code_value_int();
+//   }
+//   if (code_seen('T')){
+//     TestPinNumber = code_value_int();
+//     if (TestPinNumber = 0){
+//       pinMode(TEST_0_PIN, OUTPUT);
+//       WRITE(TEST_0_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
+//       WRITE(TEST_0_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 1){
+//       pinMode(TEST_1_PIN, OUTPUT);
+//       WRITE(TEST_1_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
+//       WRITE(TEST_1_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 2){
+//       pinMode(TEST_2_PIN, OUTPUT);
+//       WRITE(TEST_2_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
+//       WRITE(TEST_2_PIN, HIGH);
+//     }
+//     if (TestPinNumber = 3){
+//       pinMode(TEST_3_PIN, OUTPUT);
+//       WRITE(TEST_3_PIN, LOW);
+//       delayMicroseconds(pulse_usec);
+//       WRITE(TEST_3_PIN, HIGH);
+//     }
+//   }
+// }
+
 #if HAS_BED_PROBE
 
   /**
@@ -9576,6 +9781,27 @@ void process_next_command() {
         gcode_M400();
         break;
 
+
+
+      //LBL/CREA Custom Functions
+      case 430: // M430: Make pulse
+        gcode_M430();
+        break;
+      case 431: // M431: Turn on test pin
+        gcode_M431();
+        break;
+      case 432: // M432: Turn off test pin
+        gcode_M432();
+        break;
+      case 433: // M433: Set Pressure Regulator (PSI)
+        gcode_M433();
+        break;
+      // case 434: // M434: Make pulse select test pin
+      //   gcode_M434();
+      //   break;
+
+
+
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
           gcode_M401();
@@ -11289,6 +11515,16 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
+
+
+  //LBL/CREA
+  setup_heaterpinsOFF();
+  setup_PWMvalvepinsOFF();
+
+  #if ENABLED(FAST_PWM_FAN)
+    FastPWM();
+  #endif
+
 
   #ifdef DISABLE_JTAG
     // Disable JTAG on AT90USB chips to free up pins for IO
