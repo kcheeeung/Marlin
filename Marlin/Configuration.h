@@ -487,14 +487,14 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 3200 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 200 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 20, 20, 5, 1 }
+#define DEFAULT_MAX_FEEDRATE          { 50, 50, 5, 5 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -502,7 +502,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 250, 250, 50, 50 }
+#define DEFAULT_MAX_ACCELERATION      { 500, 500, 100, 500 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -512,9 +512,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          250    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  250    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
@@ -527,7 +527,7 @@
 #define DEFAULT_XJERK                  0.1
 #define DEFAULT_YJERK                  0.1
 #define DEFAULT_ZJERK                  0.1
-#define DEFAULT_EJERK                  0.1
+#define DEFAULT_EJERK                  1.0
 
 
 /**
@@ -773,8 +773,8 @@
 #define X_MIN_POS -50
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 200
-#define Y_MAX_POS 200
+#define X_MAX_POS 150
+#define Y_MAX_POS 180
 #define Z_MAX_POS 200
 
 // If enabled, axes won't move below MIN_POS in response to movement commands.
@@ -979,7 +979,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (25*60)
+#define HOMING_FEEDRATE_XY (20*60)
 #define HOMING_FEEDRATE_Z  (3*60)
 
 //=============================================================================
