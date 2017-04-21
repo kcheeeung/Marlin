@@ -487,14 +487,14 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 200 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 343}
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 50, 50, 5, 5 }
+#define DEFAULT_MAX_FEEDRATE          { 50, 50, 5, 3 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -502,7 +502,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 250, 250, 100, 10 }
+#define DEFAULT_MAX_ACCELERATION      { 150, 150, 100, 5 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -512,9 +512,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          250    // X, Y, Z and E acceleration for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  250    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_ACCELERATION          150    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  150    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   150    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk (mm/s)
