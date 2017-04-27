@@ -482,19 +482,29 @@
  * Note that if EEPROM is enabled, saved values will override these.
  */
 
+// 14:1
+// E steps: 2746
+// Feedrate: 0.5
+// Acceleration: 25
+
+// 5:1
+// E steps: 1036 theoretical
+// Feedrate: 0.5
+// Acceleration: 25 
+
 /**
  * Default Axis Steps Per Unit (steps/mm)
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 343}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 3200, 2500}
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 50, 50, 5, 3 }
+#define DEFAULT_MAX_FEEDRATE          { 50, 50, 5, 0.5 }
 
 /**
  * Default Max Acceleration (change/s) change = mm/s
@@ -502,7 +512,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2[, E3]]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 150, 150, 100, 5 }
+#define DEFAULT_MAX_ACCELERATION      { 150, 150, 100, 25 }
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -527,7 +537,7 @@
 #define DEFAULT_XJERK                  0.1
 #define DEFAULT_YJERK                  0.1
 #define DEFAULT_ZJERK                  0.1
-#define DEFAULT_EJERK                  0.1
+#define DEFAULT_EJERK                  0.0
 
 
 /**
