@@ -210,8 +210,6 @@
  * M430 - Make pulse
  * M431 - Turn on test pin
  * M432 - Turn off test pin
- * M433 - Set Pressure Regulator (PSI)
- * M434 - Make pulse select test pin
  * ************* LBL/CREA End ****************
  *
  * ************ Custom codes - This can change to suit future G-code regulations
@@ -7723,73 +7721,6 @@ inline void gcode_M432() {
   }
 }
 
-/** 
- * M433: Set Pressure Regulator (PSI) / Use the SIGNAL end (- terminal of heater)
- */
-inline void gcode_M433(){
-  if(!code_seen('P')) return; //You must pick a PSI (Can accept decimals)
-  float airPSI = code_value_float();
-  if(airPSI < 0 || airPSI > 30) return; //PREVENT ACCIDENTAL PSI OVERLOAD TO VALVES
-
-  if(!code_seen('R')) return; //You must pick a REG_#_PIN to set
-  int PSIregulator = code_value_int();
-
-  float REQ_VOLTAGE = (airPSI / PSI_TO_SIGNAL_RATIO);
-  float REV_DUTYCYCLE_PSI = 255 - (255 * REQ_VOLTAGE/INPUT_HEATER_VOLTAGE);
-  int rdREV_DUTYCYCLE_PSI = round(REV_DUTYCYCLE_PSI);
-
-  if (PSIregulator == 1){
-    pinMode(REG_1_PIN, OUTPUT);
-    WRITE(REG_1_PIN, rdREV_DUTYCYCLE_PSI);
-  }
-  if (PSIregulator == 2){
-    pinMode(REG_2_PIN, OUTPUT);
-    WRITE(REG_2_PIN, rdREV_DUTYCYCLE_PSI);
-  }
-  if (PSIregulator == 3){
-    pinMode(REG_3_PIN, OUTPUT);
-    WRITE(REG_3_PIN, rdREV_DUTYCYCLE_PSI);
-  }
-}
-
-// /** 
-//  * M434: LBL/CREA Make pulse select test pin
-//  */
-// inline void gcode_M434() {
-//   int pulse_usec = 200; //default to 200 usecs
-//   int TestPinNumber = 0; //default to TEST_0_PIN
-//   if (code_seen('S')){
-//     pulse_usec = code_value_int();
-//   }
-//   if (code_seen('T')){
-//     TestPinNumber = code_value_int();
-//     if (TestPinNumber = 0){
-//       pinMode(TEST_0_PIN, OUTPUT);
-//       WRITE(TEST_0_PIN, LOW);
-//       delayMicroseconds(pulse_usec);
-//       WRITE(TEST_0_PIN, HIGH);
-//     }
-//     if (TestPinNumber = 1){
-//       pinMode(TEST_1_PIN, OUTPUT);
-//       WRITE(TEST_1_PIN, LOW);
-//       delayMicroseconds(pulse_usec);
-//       WRITE(TEST_1_PIN, HIGH);
-//     }
-//     if (TestPinNumber = 2){
-//       pinMode(TEST_2_PIN, OUTPUT);
-//       WRITE(TEST_2_PIN, LOW);
-//       delayMicroseconds(pulse_usec);
-//       WRITE(TEST_2_PIN, HIGH);
-//     }
-//     if (TestPinNumber = 3){
-//       pinMode(TEST_3_PIN, OUTPUT);
-//       WRITE(TEST_3_PIN, LOW);
-//       delayMicroseconds(pulse_usec);
-//       WRITE(TEST_3_PIN, HIGH);
-//     }
-//   }
-// }
-
 #if HAS_BED_PROBE
 
   /**
@@ -9793,12 +9724,6 @@ void process_next_command() {
       case 432: // M432: Turn off test pin
         gcode_M432();
         break;
-      case 433: // M433: Set Pressure Regulator (PSI)
-        gcode_M433();
-        break;
-      // case 434: // M434: Make pulse select test pin
-      //   gcode_M434();
-      //   break;
 
 
 
