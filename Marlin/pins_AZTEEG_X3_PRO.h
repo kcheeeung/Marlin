@@ -106,16 +106,16 @@
 
 #undef HEATER_0_PIN
 #undef HEATER_1_PIN
-#define HEATER_0_PIN     10 // HEATER ACTIVE
-#define HEATER_1_PIN      9 // HEATER ACTIVE
+#define HEATER_0_PIN     10 // HEATER_0 connected 
+#define HEATER_1_PIN      9 // HEATER 1 
 
 #define HEATER_2_PIN     11 // Tie to Pin 11
 #define HEATER_3_PIN     11 // Tie to Pin 11
 #define HEATER_4_PIN     11 // Tie to Pin 11
 
 //General On/Off Pins
-#define TEST_0_PIN       10 // HE1 PWM INACTIVE
-#define TEST_1_PIN        9 // HE2 PWM INACTIVE
+#define TEST_0_PIN       10 // HE1 PWM DO NOT USE
+#define TEST_1_PIN        9 // HE2 PWM DO NOT USE
 
 #define TEST_2_PIN       16 // HE3 Not PWM
 #define TEST_3_PIN       17 // HE4 Not PWM
