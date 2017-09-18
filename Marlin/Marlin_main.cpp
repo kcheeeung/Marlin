@@ -231,6 +231,13 @@
  * M363 - SCARA calibration: Move to cal-position PsiB (90 deg calibration - steps per degree)
  * M364 - SCARA calibration: Move to cal-position PSIC (90 deg to Theta calibration position)
  *
+ *
+ * ************* LBL Specific ***F**********
+ * M430 - Make pulse
+ * M431 - Turn on test pin
+ * M432 - Turn off test pin
+ * ************* LBL Specific ************* 
+ *
  * ************ Custom codes - This can change to suit future G-code regulations
  * M928 - Start SD logging: "M928 filename.gco". Stop with M29. (Requires SDSUPPORT)
  * M999 - Restart after being stopped by error
@@ -9185,6 +9192,85 @@ inline void gcode_M303() {
  */
 inline void gcode_M400() { stepper.synchronize(); }
 
+/** 
+ * M430: LBL Make pulse (Using the 5V PWMs)
+ */
+inline void gcode_M430() {
+  int pulse_usec = 200; //Default to 200 usecs
+  if (code_seen('S')){
+    pulse_usec = code_value_int();
+  }
+
+  if (!code_seen('V')) return; //You must pick a valve number
+  int ValveNumber = code_value_int();
+  if (ValveNumber == 1){
+    pinMode(VALVE_1_PIN, OUTPUT);
+    WRITE(VALVE_1_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_1_PIN, LOW);
+  }
+  if (ValveNumber == 2){
+    pinMode(VALVE_2_PIN, OUTPUT);  
+    WRITE(VALVE_2_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_2_PIN, LOW);
+  }
+  if (ValveNumber == 3){
+    pinMode(VALVE_3_PIN, OUTPUT);
+    WRITE(VALVE_3_PIN, HIGH);
+    delayMicroseconds(pulse_usec);
+    WRITE(VALVE_3_PIN, LOW);
+  }
+}
+
+/** 
+ * M431: LBL Turn On Test Pin (Using the heater/fans)
+ */
+inline void gcode_M431() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  int TestPinON = code_value_int();
+  if (TestPinON == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 255);
+  }
+  if (TestPinON == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 255);
+  }
+  if (TestPinON == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 255);
+  }
+  if (TestPinON == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 255);
+  }
+}
+
+/** 
+ * M432: LBL Turn Off Test Pin (Using the heater/fans)
+ */
+inline void gcode_M432() {
+  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn off
+  int TestPinOFF = code_value_int();
+  if (TestPinOFF == 0){
+    pinMode(TEST_0_PIN, OUTPUT);
+    WRITE(TEST_0_PIN, 0);
+  }
+  if (TestPinOFF == 1){
+    pinMode(TEST_1_PIN, OUTPUT);
+    WRITE(TEST_1_PIN, 0);
+  }
+  if (TestPinOFF == 2){
+    pinMode(TEST_2_PIN, OUTPUT);
+    WRITE(TEST_2_PIN, 0);
+  }
+  if (TestPinOFF == 3){
+    pinMode(TEST_3_PIN, OUTPUT);
+    WRITE(TEST_3_PIN, 0);
+  }
+}
+
 #if HAS_BED_PROBE
 
   /**
@@ -11396,6 +11482,17 @@ void process_next_command() {
       case 400: // M400: Finish all moves
         gcode_M400();
         break;
+
+      //LBL Custom Functions
+      case 430: // M430: Make pulse
+        gcode_M430();
+        break;
+      case 431: // M431: Turn on test pin
+        gcode_M431();
+        break;
+      case 432: // M432: Turn off test pin
+        gcode_M432();
+      break;
 
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
