@@ -20,12 +20,18 @@
  *
  */
 
- // Please update this list when adding new pins to Marlin.
- // The order doesn't matter.
- // Following this pattern is a must.
- // If the new pin name is over 28 characters long then pinsDebug.h will need to be modified.
+// Please update this list when adding new pins to Marlin.
+// The order doesn't matter.
+// Following this pattern is a must.
+// If the new pin name is over 28 characters long then pinsDebug.h will need to be modified.
 
-  // Pin list updated from 18 FEB 2017 RCBugfix branch   - max length of pin name is 24
+// Pin list updated from 18 FEB 2017 RCBugfix branch   - max length of pin name is 24
+
+#line 0 // set __LINE__ to a known value for both passes
+
+#if PIN_EXISTS(ADC_KEYPAD) && ADC_KEYPAD_PIN < NUM_ANALOG_INPUTS
+  REPORT_NAME_ANALOG(ADC_KEYPAD_PIN, __LINE__ )
+#endif
 #if defined(__FD) && __FD >= 0
   REPORT_NAME_DIGITAL(__FD, __LINE__ )
 #endif
@@ -37,6 +43,9 @@
 #endif
 #if defined(__GS) && __GS >= 0
   REPORT_NAME_DIGITAL(__GS, __LINE__ )
+#endif
+#if PIN_EXISTS(ADC_KEYPAD)
+  REPORT_NAME_ANALOG(ADC_KEYPAD_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(AVR_MISO)
   REPORT_NAME_DIGITAL(AVR_MISO_PIN, __LINE__ )
@@ -92,8 +101,8 @@
 #if PIN_EXISTS(CASE_LIGHT)
   REPORT_NAME_DIGITAL(CASE_LIGHT_PIN, __LINE__ )
 #endif
-#if PIN_EXISTS(CONTROLLERFAN)
-  REPORT_NAME_DIGITAL(CONTROLLERFAN_PIN, __LINE__ )
+#if PIN_EXISTS(CONTROLLER_FAN)
+  REPORT_NAME_DIGITAL(CONTROLLER_FAN_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(CUTOFF_RESET)
   REPORT_NAME_DIGITAL(CUTOFF_RESET_PIN, __LINE__ )
@@ -224,18 +233,6 @@
 #if PIN_EXISTS(E4_STEP)
   REPORT_NAME_DIGITAL(E4_STEP_PIN, __LINE__ )
 #endif
-#if defined(encrot0) && encrot0 >= 0
-  REPORT_NAME_DIGITAL(encrot0, __LINE__ )
-#endif
-#if defined(encrot1) && encrot1 >= 0
-  REPORT_NAME_DIGITAL(encrot1, __LINE__ )
-#endif
-#if defined(encrot2) && encrot2 >= 0
-  REPORT_NAME_DIGITAL(encrot2, __LINE__ )
-#endif
-#if defined(encrot3) && encrot3 >= 0
-  REPORT_NAME_DIGITAL(encrot3, __LINE__ )
-#endif
 #if defined(EXT_AUX_A0) && EXT_AUX_A0 >= 0 && EXT_AUX_A0 < NUM_ANALOG_INPUTS
   REPORT_NAME_ANALOG(EXT_AUX_A0, __LINE__ )
 #endif
@@ -317,9 +314,6 @@
 #if PIN_EXISTS(FILWIDTH) && FILWIDTH_PIN < NUM_ANALOG_INPUTS
   REPORT_NAME_ANALOG(FILWIDTH_PIN, __LINE__ )
 #endif
-#if defined(GEN7_VERSION) && GEN7_VERSION >= 0
-  REPORT_NAME_DIGITAL(GEN7_VERSION, __LINE__ )
-#endif
 #if PIN_EXISTS(HEATER_0)
   REPORT_NAME_DIGITAL(HEATER_0_PIN, __LINE__ )
 #endif
@@ -350,11 +344,11 @@
 #if PIN_EXISTS(HOME)
   REPORT_NAME_DIGITAL(HOME_PIN, __LINE__ )
 #endif
-#if defined(I2C_SCL) && I2C_SCL >= 0
-  REPORT_NAME_DIGITAL(I2C_SCL, __LINE__ )
+#if PIN_EXISTS(I2C_SCL)
+  REPORT_NAME_DIGITAL(I2C_SCL_PIN, __LINE__ )
 #endif
-#if defined(I2C_SDA) && I2C_SDA >= 0
-  REPORT_NAME_DIGITAL(I2C_SDA, __LINE__ )
+#if PIN_EXISTS(I2C_SDA)
+  REPORT_NAME_DIGITAL(I2C_SDA_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(KILL)
   REPORT_NAME_DIGITAL(KILL_PIN, __LINE__ )
@@ -365,22 +359,22 @@
 #if defined(LCD_CONTRAST) && LCD_CONTRAST >= 0
   REPORT_NAME_DIGITAL(LCD_CONTRAST, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_D4) && LCD_PINS_D4 >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_D4, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_D5) && LCD_PINS_D5 >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_D5, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_D6) && LCD_PINS_D6 >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_D6, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_D7) && LCD_PINS_D7 >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_D7, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_ENABLE) && LCD_PINS_ENABLE >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_ENABLE, __LINE__ )
 #endif
-#if PIN_EXISTS(LCD)
+#if defined(LCD_PINS_RS) && LCD_PINS_RS >= 0
   REPORT_NAME_DIGITAL(LCD_PINS_RS, __LINE__ )
 #endif
 #if defined(LCD_SDSS) && LCD_SDSS >= 0
@@ -422,9 +416,6 @@
 #if PIN_EXISTS(MOTOR_CURRENT_PWM_Z)
   REPORT_NAME_DIGITAL(MOTOR_CURRENT_PWM_Z_PIN, __LINE__ )
 #endif
-#if defined(NUM_TLCS) && NUM_TLCS >= 0
-  REPORT_NAME_DIGITAL(NUM_TLCS, __LINE__ )
-#endif
 #if PIN_EXISTS(ORIG_E0_AUTO_FAN)
   REPORT_NAME_DIGITAL(ORIG_E0_AUTO_FAN_PIN, __LINE__ )
 #endif
@@ -460,6 +451,18 @@
 #endif
 #if PIN_EXISTS(RAMPS_D9)
   REPORT_NAME_DIGITAL(RAMPS_D9_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(RGB_LED_R)
+  REPORT_NAME_DIGITAL(RGB_LED_R_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(RGB_LED_G)
+  REPORT_NAME_DIGITAL(RGB_LED_G_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(RGB_LED_B)
+  REPORT_NAME_DIGITAL(RGB_LED_B_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(RGB_LED_W)
+  REPORT_NAME_DIGITAL(RGB_LED_W_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(RX_ENABLE)
   REPORT_NAME_DIGITAL(RX_ENABLE_PIN, __LINE__ )
@@ -515,11 +518,20 @@
 #if PIN_EXISTS(SLEEP_WAKE)
   REPORT_NAME_DIGITAL(SLEEP_WAKE_PIN, __LINE__ )
 #endif
+#if PIN_EXISTS(SOL0)
+  REPORT_NAME_DIGITAL(SOL0_PIN, __LINE__ )
+#endif
 #if PIN_EXISTS(SOL1)
   REPORT_NAME_DIGITAL(SOL1_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(SOL2)
   REPORT_NAME_DIGITAL(SOL2_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(SOL3)
+  REPORT_NAME_DIGITAL(SOL3_PIN, __LINE__ )
+#endif
+#if PIN_EXISTS(SOL4)
+  REPORT_NAME_DIGITAL(SOL4_PIN, __LINE__ )
 #endif
 #if defined(SPARE_IO) && SPARE_IO >= 0
   REPORT_NAME_DIGITAL(SPARE_IO, __LINE__ )
@@ -530,8 +542,8 @@
 #if PIN_EXISTS(SPINDLE_LASER_ENABLE)
   REPORT_NAME_DIGITAL(SPINDLE_LASER_ENABLE_PIN, __LINE__ )
 #endif
-#if PIN_EXISTS(SPINDLE_SPEED_LASER_POWER)
-  REPORT_NAME_DIGITAL(SPINDLE_SPEED_LASER_POWER_PIN, __LINE__ )
+#if PIN_EXISTS(SPINDLE_LASER_PWM)
+  REPORT_NAME_DIGITAL(SPINDLE_LASER_PWM_PIN, __LINE__ )
 #endif
 #if PIN_EXISTS(SR_CLK)
   REPORT_NAME_DIGITAL(SR_CLK_PIN, __LINE__ )
@@ -545,14 +557,8 @@
 #if PIN_EXISTS(SS)
   REPORT_NAME_DIGITAL(SS_PIN, __LINE__ )
 #endif
-#if defined(STAT_LED_BLUE) && STAT_LED_BLUE >= 0
-  REPORT_NAME_DIGITAL(STAT_LED_BLUE, __LINE__ )
-#endif
 #if PIN_EXISTS(STAT_LED_BLUE)
   REPORT_NAME_DIGITAL(STAT_LED_BLUE_PIN, __LINE__ )
-#endif
-#if defined(STAT_LED_RED) && STAT_LED_RED >= 0
-  REPORT_NAME_DIGITAL(STAT_LED_RED, __LINE__ )
 #endif
 #if PIN_EXISTS(STAT_LED_RED)
   REPORT_NAME_DIGITAL(STAT_LED_RED_PIN, __LINE__ )
@@ -599,20 +605,11 @@
 #if PIN_EXISTS(THERMO_SCK)
   REPORT_NAME_DIGITAL(THERMO_SCK_PIN, __LINE__ )
 #endif
-#if defined(TLC_BLANK_BIT) && TLC_BLANK_BIT >= 0
-  REPORT_NAME_DIGITAL(TLC_BLANK_BIT, __LINE__ )
-#endif
 #if PIN_EXISTS(TLC_BLANK)
   REPORT_NAME_DIGITAL(TLC_BLANK_PIN, __LINE__ )
 #endif
-#if defined(TLC_CLOCK_BIT) && TLC_CLOCK_BIT >= 0
-  REPORT_NAME_DIGITAL(TLC_CLOCK_BIT, __LINE__ )
-#endif
 #if PIN_EXISTS(TLC_CLOCK)
   REPORT_NAME_DIGITAL(TLC_CLOCK_PIN, __LINE__ )
-#endif
-#if defined(TLC_DATA_BIT) && TLC_DATA_BIT >= 0
-  REPORT_NAME_DIGITAL(TLC_DATA_BIT, __LINE__ )
 #endif
 #if PIN_EXISTS(TLC_DATA)
   REPORT_NAME_DIGITAL(TLC_DATA_PIN, __LINE__ )
@@ -779,3 +776,4 @@
 #if PIN_EXISTS(Z2_STEP)
   REPORT_NAME_DIGITAL(Z2_STEP_PIN, __LINE__ )
 #endif
+
