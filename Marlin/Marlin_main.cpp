@@ -9196,26 +9196,27 @@ inline void gcode_M400() { stepper.synchronize(); }
  * M430: LBL Make pulse (Using the 5V PWMs)
  */
 inline void gcode_M430() {
-  int pulse_usec = 200; //Default to 200 usecs
-  if (code_seen('S')){
-    pulse_usec = code_value_int();
+  int pulse_usec = 300; //Default to 300 usecs
+  if (parser.seen('S')){
+    pulse_usec = parser.value_int();
   }
 
-  if (!code_seen('V')) return; //You must pick a valve number
-  int ValveNumber = code_value_int();
+  if (!parser.seen('V')) return; //You must pick a valve number
+  int ValveNumber = parser.value_int();
+  
   if (ValveNumber == 1){
     pinMode(VALVE_1_PIN, OUTPUT);
     WRITE(VALVE_1_PIN, HIGH);
     delayMicroseconds(pulse_usec);
     WRITE(VALVE_1_PIN, LOW);
   }
-  if (ValveNumber == 2){
+  else if (ValveNumber == 2){
     pinMode(VALVE_2_PIN, OUTPUT);  
     WRITE(VALVE_2_PIN, HIGH);
     delayMicroseconds(pulse_usec);
     WRITE(VALVE_2_PIN, LOW);
   }
-  if (ValveNumber == 3){
+  else if (ValveNumber == 3){
     pinMode(VALVE_3_PIN, OUTPUT);
     WRITE(VALVE_3_PIN, HIGH);
     delayMicroseconds(pulse_usec);
@@ -9227,21 +9228,21 @@ inline void gcode_M430() {
  * M431: LBL Turn On Test Pin (Using the heater/fans)
  */
 inline void gcode_M431() {
-  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn on
-  int TestPinON = code_value_int();
+  if (!parser.seen('T')) return; //You must pick a TEST_#_PIN to turn on
+  int TestPinON = parser.value_int();
   if (TestPinON == 0){
     pinMode(TEST_0_PIN, OUTPUT);
     WRITE(TEST_0_PIN, 255);
   }
-  if (TestPinON == 1){
+  else if (TestPinON == 1){
     pinMode(TEST_1_PIN, OUTPUT);
     WRITE(TEST_1_PIN, 255);
   }
-  if (TestPinON == 2){
+  else if (TestPinON == 2){
     pinMode(TEST_2_PIN, OUTPUT);
     WRITE(TEST_2_PIN, 255);
   }
-  if (TestPinON == 3){
+  else if (TestPinON == 3){
     pinMode(TEST_3_PIN, OUTPUT);
     WRITE(TEST_3_PIN, 255);
   }
@@ -9251,21 +9252,21 @@ inline void gcode_M431() {
  * M432: LBL Turn Off Test Pin (Using the heater/fans)
  */
 inline void gcode_M432() {
-  if (!code_seen('T')) return; //You must pick a TEST_#_PIN to turn off
-  int TestPinOFF = code_value_int();
+  if (!parser.seen('T')) return; //You must pick a TEST_#_PIN to turn off
+  int TestPinOFF = parser.value_int();
   if (TestPinOFF == 0){
     pinMode(TEST_0_PIN, OUTPUT);
     WRITE(TEST_0_PIN, 0);
   }
-  if (TestPinOFF == 1){
+  else if (TestPinOFF == 1){
     pinMode(TEST_1_PIN, OUTPUT);
     WRITE(TEST_1_PIN, 0);
   }
-  if (TestPinOFF == 2){
+  else if (TestPinOFF == 2){
     pinMode(TEST_2_PIN, OUTPUT);
     WRITE(TEST_2_PIN, 0);
   }
-  if (TestPinOFF == 3){
+  else if (TestPinOFF == 3){
     pinMode(TEST_3_PIN, OUTPUT);
     WRITE(TEST_3_PIN, 0);
   }

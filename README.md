@@ -21,7 +21,6 @@ Thank you everyone for your hard work and decidation to the bioprinting project.
  - Mason Fujimoto, Class of 2017
  - Quinn Tran, Class of 2018
  - Katie Wu, Class of 2018
- - Jake Yukich, Class of 2019
 
 ### Mechanical Engineering
  - Kuldeep Bista, Class of 2017
