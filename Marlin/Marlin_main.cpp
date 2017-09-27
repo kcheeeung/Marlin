@@ -729,6 +729,34 @@ void prepare_move_to_destination();
 void get_cartesian_from_steppers();
 void set_current_from_steppers_for_axis(const AxisEnum axis);
 
+
+
+// LBL Custom Functions
+  // Turn off all PWM_#_PIN at Start
+  void setup_initPWM_OFF() {
+    pinMode(PWM_0_PIN, OUTPUT);
+    pinMode(PWM_1_PIN, OUTPUT);
+    pinMode(PWM_2_PIN, OUTPUT);
+    pinMode(PWM_3_PIN, OUTPUT);
+
+    WRITE(PWM_0_PIN, LOW);
+    WRITE(PWM_1_PIN, LOW);
+    WRITE(PWM_2_PIN, LOW);
+    WRITE(PWM_3_PIN, LOW);
+  }
+  // Turn off Heaters at Start (MOSFET: Use - terminal as signal end)
+  void setup_initREG_OFF() {
+    pinMode(REG_1_PIN, OUTPUT);
+    pinMode(REG_2_PIN, OUTPUT);
+    pinMode(REG_3_PIN, OUTPUT);
+
+    WRITE(REG_1_PIN, HIGH);
+    WRITE(REG_2_PIN, HIGH);
+    WRITE(REG_3_PIN, HIGH);
+  }
+
+
+
 #if ENABLED(ARC_SUPPORT)
   void plan_arc(float target[XYZE], float* offset, uint8_t clockwise);
 #endif
@@ -9192,85 +9220,119 @@ inline void gcode_M303() {
  */
 inline void gcode_M400() { stepper.synchronize(); }
 
-/** 
- * M430: LBL Make pulse (Using the 5V PWMs)
- */
-inline void gcode_M430() {
-  int pulse_usec = 300; //Default to 300 usecs
-  if (parser.seen('S')){
-    pulse_usec = parser.value_int();
+
+
+// LBL Custom MCommands
+  // M430: Make pulse (Using the 5V PWMs)
+  inline void gcode_M430() {
+    int pulse_usec = 300; //Default to 300 usecs
+    if (parser.seen('S')){
+      pulse_usec = parser.value_int();
+    }
+
+    if (!parser.seen('V')) return; //You must pick a valve number
+    int ValveNumber = parser.value_int();
+    
+    if (ValveNumber == 0){
+      pinMode(PWM_0_PIN, OUTPUT);
+      WRITE(PWM_0_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(PWM_0_PIN, LOW);
+    }
+    else if (ValveNumber == 1){
+      pinMode(PWM_1_PIN, OUTPUT);  
+      WRITE(PWM_1_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(PWM_1_PIN, LOW);
+    }
+    else if (ValveNumber == 2){
+      pinMode(PWM_2_PIN, OUTPUT);
+      WRITE(PWM_2_PIN, HIGH);
+      delayMicroseconds(pulse_usec);
+      WRITE(PWM_2_PIN, LOW);
+    }
   }
 
-  if (!parser.seen('V')) return; //You must pick a valve number
-  int ValveNumber = parser.value_int();
-  
-  if (ValveNumber == 1){
-    pinMode(VALVE_1_PIN, OUTPUT);
-    WRITE(VALVE_1_PIN, HIGH);
-    delayMicroseconds(pulse_usec);
-    WRITE(VALVE_1_PIN, LOW);
-  }
-  else if (ValveNumber == 2){
-    pinMode(VALVE_2_PIN, OUTPUT);  
-    WRITE(VALVE_2_PIN, HIGH);
-    delayMicroseconds(pulse_usec);
-    WRITE(VALVE_2_PIN, LOW);
-  }
-  else if (ValveNumber == 3){
-    pinMode(VALVE_3_PIN, OUTPUT);
-    WRITE(VALVE_3_PIN, HIGH);
-    delayMicroseconds(pulse_usec);
-    WRITE(VALVE_3_PIN, LOW);
-  }
-}
+  #if ENABLED(USE_GEN_PINS)
+    // M431: Turn ON GEN_#_PIN (Uses the heater ports)
+    inline void gcode_M431() {
+      if (!parser.seen('G')) return; //You must pick a GEN_#_PIN to turn on
+      int pinON = parser.value_int();
 
-/** 
- * M431: LBL Turn On Test Pin (Using the heater/fans)
- */
-inline void gcode_M431() {
-  if (!parser.seen('T')) return; //You must pick a TEST_#_PIN to turn on
-  int TestPinON = parser.value_int();
-  if (TestPinON == 0){
-    pinMode(TEST_0_PIN, OUTPUT);
-    WRITE(TEST_0_PIN, 255);
-  }
-  else if (TestPinON == 1){
-    pinMode(TEST_1_PIN, OUTPUT);
-    WRITE(TEST_1_PIN, 255);
-  }
-  else if (TestPinON == 2){
-    pinMode(TEST_2_PIN, OUTPUT);
-    WRITE(TEST_2_PIN, 255);
-  }
-  else if (TestPinON == 3){
-    pinMode(TEST_3_PIN, OUTPUT);
-    WRITE(TEST_3_PIN, 255);
-  }
-}
+      if (pinON == 0){
+        pinMode(GEN_0_PIN, OUTPUT);
+        WRITE(GEN_0_PIN, 255);
+      }
+      else if (pinON == 1){
+        pinMode(GEN_1_PIN, OUTPUT);
+        WRITE(GEN_1_PIN, 255);
+      }
+      else if (pinON == 2){
+        pinMode(GEN_2_PIN, OUTPUT);
+        WRITE(GEN_2_PIN, 255);
+      }
+      else if (pinON == 3){
+        pinMode(GEN_3_PIN, OUTPUT);
+        WRITE(GEN_3_PIN, 255);
+      }
+      else if (pinON == 4){
+        pinMode(GEN_4_PIN, OUTPUT);
+        WRITE(GEN_4_PIN, 255);
+      }
+      else if (pinON == 5){
+        pinMode(GEN_5_PIN, OUTPUT);
+        WRITE(GEN_5_PIN, 255);
+      }
+      else if (pinON == 6){
+        pinMode(GEN_6_PIN, OUTPUT);
+        WRITE(GEN_6_PIN, 255);
+      }
+      else if (pinON == 7){
+        pinMode(GEN_7_PIN, OUTPUT);
+        WRITE(GEN_7_PIN, 255);
+      }
+    }
+    // M432: Turn OFF GEN_#_PIN (Uses the heater ports)
+    inline void gcode_M432() {
+      if (!parser.seen('G')) return; //You must pick a GEN_#_PIN to turn off
+      int pinOFF = parser.value_int();
 
-/** 
- * M432: LBL Turn Off Test Pin (Using the heater/fans)
- */
-inline void gcode_M432() {
-  if (!parser.seen('T')) return; //You must pick a TEST_#_PIN to turn off
-  int TestPinOFF = parser.value_int();
-  if (TestPinOFF == 0){
-    pinMode(TEST_0_PIN, OUTPUT);
-    WRITE(TEST_0_PIN, 0);
-  }
-  else if (TestPinOFF == 1){
-    pinMode(TEST_1_PIN, OUTPUT);
-    WRITE(TEST_1_PIN, 0);
-  }
-  else if (TestPinOFF == 2){
-    pinMode(TEST_2_PIN, OUTPUT);
-    WRITE(TEST_2_PIN, 0);
-  }
-  else if (TestPinOFF == 3){
-    pinMode(TEST_3_PIN, OUTPUT);
-    WRITE(TEST_3_PIN, 0);
-  }
-}
+      if (pinOFF == 0){
+        pinMode(GEN_0_PIN, OUTPUT);
+        WRITE(GEN_0_PIN, 0);
+      }
+      else if (pinOFF == 1){
+        pinMode(GEN_1_PIN, OUTPUT);
+        WRITE(GEN_1_PIN, 0);
+      }
+      else if (pinOFF == 2){
+        pinMode(GEN_2_PIN, OUTPUT);
+        WRITE(GEN_2_PIN, 0);
+      }
+      else if (pinOFF == 3){
+        pinMode(GEN_3_PIN, OUTPUT);
+        WRITE(GEN_3_PIN, 0);
+      }
+      else if (pinOFF == 4){
+        pinMode(GEN_4_PIN, OUTPUT);
+        WRITE(GEN_4_PIN, 0);
+      }
+      else if (pinOFF == 5){
+        pinMode(GEN_5_PIN, OUTPUT);
+        WRITE(GEN_5_PIN, 0);
+      }
+      else if (pinOFF == 6){
+        pinMode(GEN_6_PIN, OUTPUT);
+        WRITE(GEN_6_PIN, 0);
+      }
+      else if (pinOFF == 7){
+        pinMode(GEN_7_PIN, OUTPUT);
+        WRITE(GEN_7_PIN, 0);
+      }
+    }
+  #endif
+
+
 
 #if HAS_BED_PROBE
 
@@ -11484,16 +11546,22 @@ void process_next_command() {
         gcode_M400();
         break;
 
-      //LBL Custom Functions
+
+
+    // LBL Custom MCommand Parse
       case 430: // M430: Make pulse
         gcode_M430();
         break;
-      case 431: // M431: Turn on test pin
-        gcode_M431();
+      #if ENABLED(USE_GEN_PINS)
+        case 431: // M431: Turn ON GEN_#_PIN
+          gcode_M431();
+          break;
+        case 432: // M432: Turn OFF GEN_#_PIN
+          gcode_M432();
         break;
-      case 432: // M432: Turn off test pin
-        gcode_M432();
-      break;
+      #endif
+
+
 
       #if HAS_BED_PROBE
         case 401: // M401: Deploy probe
@@ -13421,6 +13489,14 @@ void stop() {
  *    • status LEDs
  */
 void setup() {
+
+
+
+  // LBL Function Calls
+    setup_initREG_OFF();
+    setup_initPWM_OFF();
+
+
 
   #if ENABLED(MAX7219_DEBUG)
     Max7219_init();
