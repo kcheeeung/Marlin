@@ -119,43 +119,45 @@
   // Number of heaters must equal to number of extruders!
     #undef HEATER_0_PIN
     #undef HEATER_1_PIN
-    #define HEATER_0_PIN     10 // HEATER_0 connected
-    #define HEATER_1_PIN     11 // Tie to Pin 11 Tied to internal clock
-    #define HEATER_2_PIN     11 // Tie to Pin 11 Tied to internal clock
-    #define HEATER_3_PIN     11 // Tie to Pin 11 Tied to internal clock
-    #define HEATER_4_PIN     11 // Tie to Pin 11 Tied to internal clock
+    #define HEATER_0_PIN    10 // HEATER_0 connected
+    #define HEATER_1_PIN    11 // Tie to Pin 11
+    #define HEATER_2_PIN    11 // Tie to Pin 11
+    #define HEATER_3_PIN    11 // Tie to Pin 11
+    #define HEATER_4_PIN    11 // Tie to Pin 11
+    // #define HEATER_5_PIN    11 // Tie to Pin 11
+    // #define HEATER_6_PIN    11 // Tie to Pin 11
+    // #define HEATER_7_PIN    11 // Tie to Pin 11
 
   // General On/Off Pins (Uses the heater ports!)
-    // #define USE_GEN_PINS // Allows the use of heaters as general power switches
+    // #define USE_GEN_PINS       // Enables the use of heaters as general power switches
 
     // #define GEN_0_PIN    10 // HE1 PWM
     // #define GEN_1_PIN     9 // HE2 PWM
-    // #define GEN_2_PIN    16 // HE3 Not PWM
-    // #define GEN_3_PIN    17 // HE4 Not PWM
+    // #define GEN_2_PIN    16 // HE3 PWM Uncontrollable
+    // #define GEN_3_PIN    17 // HE4 PWM Uncontrollable
     // #define GEN_4_PIN     4 // HE5 PWM
     // #define GEN_5_PIN     5 // HE6 PWM
     // #define GEN_6_PIN     6 // HE7 PWM
+    // #define GEN_7_PIN    11 // HE8 PWM Uncontrollable
 
-    // #define GEN_7_PIN    11 // HE8 PWM Tied to internal clock
+  // Heater PWM Pins (MOSFET: Use - terminal as signal end; Reverse Logic)
+    #undef FIL_RUNOUT_PIN      // Pin 4
+    #undef SERVO2_PIN          // Pin 5
+    #undef SERVO1_PIN          // Pin 6
+    #define PWM_0_PIN        4 // HE5 PWM
+    #define PWM_1_PIN        5 // HE6 PWM
+    #define PWM_2_PIN        6 // HE7 PWM
 
-  // Pressure Regulator Pins (MOSFET: Use - terminal as signal end)
-    #undef FIL_RUNOUT_PIN       // Pin 4
-    #undef SERVO2_PIN           // Pin 5
-    #undef SERVO1_PIN           // Pin 6
-    #define REG_1_PIN         4 // HE5 PWM
-    #define REG_2_PIN         5 // HE6 PWM
-    #define REG_3_PIN         6 // HE7 PWM
-
-  // Extra PWM Pins (5V)
-    #define PWM_0_PIN       7 // LCD PWM
-    #define PWM_1_PIN      44 // LCD PWM
-    #define PWM_2_PIN      45 // LCD PWM
-    #define PWM_3_PIN       2 // X_MAX PWM
+  // 5V PWM Pins
+    #define PWM_3_PIN        7 // D7  PWM Valve 0
+    #define PWM_4_PIN       44 // D44 PWM Valve 1
+    #define PWM_5_PIN       45 // D45 PWM Valve 2
+    #define PWM_6_PIN        2 // X_MAX PWM
 
 
 
 #undef FAN_PIN
-#define FAN_PIN             11 // Part Cooling System
+#define FAN_PIN              11 // (was Pin 6) Part Cooling System
 
 #ifndef CONTROLLER_FAN_PIN
   #define CONTROLLER_FAN_PIN -1 // (was Pin 4) Pin used for the fan to cool motherboard (-1 to disable)
