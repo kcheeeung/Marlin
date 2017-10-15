@@ -1,7 +1,7 @@
 # Marlin 3D Bioprinter Firmware 
 
 ## Bioprinting 
-In collaboration with University of California, Berkeley and Lawerence Berkeley National Laboratory, Berkeley Bioprinting plans to revolutionize the way researchers conduct studies by producing a 3D bioprinter capable of printing the cancer microenvironment, focusing especially on the vascularization of constructs. We plan to advance technological access and resources to researchers and students across the bay area and UC Berkeley. Our design philosophy and approach revolves around three basic principles of simplicity, elegance, functionality.
+In collaboration with University of California, Berkeley and Lawerence Berkeley National Laboratory, we plan to revolutionize the way researchers conduct studies by producing a 3D bioprinter capable of printing the cancer microenvironment, focusing especially on the vascularization of constructs. We plan to advance technological access and resources to researchers and students across the bay area and UC Berkeley. Our design philosophy and approach revolves around three basic principles of simplicity, elegance, functionality.
 
 In this variant of the Marlin firmware, our modifications make it possible to reconfigure any Arduino based 3D printer board and transform it into a printer capable of bioprinting. Marlin 1.1.x represents an evolutionary leap over Marlin 1.0.2. It is the result of over two years of effort by several volunteers around the world who have paid meticulous and sometimes obsessive attention to every detail. For this release we focused on code quality, performance, stability, and overall user experience. Several new features have also been added, many of which require no extra hardware.
 

@@ -141,9 +141,6 @@
     // #define GEN_7_PIN    11 // HE8 PWM Uncontrollable
 
   // Heater PWM Pins (MOSFET: Use - terminal as signal end; Reverse Logic)
-    #undef FIL_RUNOUT_PIN      // Pin 4
-    #undef SERVO2_PIN          // Pin 5
-    #undef SERVO1_PIN          // Pin 6
     #define PWM_0_PIN        4 // HE5 PWM
     #define PWM_1_PIN        5 // HE6 PWM
     #define PWM_2_PIN        6 // HE7 PWM
