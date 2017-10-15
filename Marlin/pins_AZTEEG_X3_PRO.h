@@ -28,9 +28,18 @@
   #error "Azteeg X3 Pro supports up to 5 hotends / E-steppers. Comment out this line to continue."
 #endif
 
+#if ENABLED(CASE_LIGHT_ENABLE)  && !PIN_EXISTS(CASE_LIGHT)
+  #define CASE_LIGHT_PIN 44     // must define it here or else RAMPS will define it
+#endif
+
+
 #define BOARD_NAME "Azteeg X3 Pro"
 
 #include "pins_RAMPS.h"
+
+#ifndef __AVR_ATmega2560__
+  #error "Oops! Make sure you have 'Arduino Mega 2560' selected from the 'Tools -> Boards' menu."
+#endif
 
 //
 // Servos
@@ -104,49 +113,61 @@
 // #define HEATER_6_PIN        6
 // #define HEATER_7_PIN       11
 
-#undef HEATER_0_PIN
-#undef HEATER_1_PIN
-#define HEATER_0_PIN     10 // HEATER_0 connected 
-#define HEATER_1_PIN      9 // HEATER 1 
 
-#define HEATER_2_PIN     11 // Tie to Pin 11
-#define HEATER_3_PIN     11 // Tie to Pin 11
-#define HEATER_4_PIN     11 // Tie to Pin 11
 
-//General On/Off Pins
-#define TEST_0_PIN       10 // HE1 PWM DO NOT USE
-#define TEST_1_PIN        9 // HE2 PWM DO NOT USE
+// LBL Custom I/O (COUNT FROM INDEX 0)
+  // Number of heaters must equal to number of extruders!
+    #undef HEATER_0_PIN
+    #undef HEATER_1_PIN
+    #define HEATER_0_PIN    10 // HEATER_0 connected
+    #define HEATER_1_PIN    11 // Tie to Pin 11
+    #define HEATER_2_PIN    11 // Tie to Pin 11
+    #define HEATER_3_PIN    11 // Tie to Pin 11
+    #define HEATER_4_PIN    11 // Tie to Pin 11
+    // #define HEATER_5_PIN    11 // Tie to Pin 11
+    // #define HEATER_6_PIN    11 // Tie to Pin 11
+    // #define HEATER_7_PIN    11 // Tie to Pin 11
 
-#define TEST_2_PIN       16 // HE3 Not PWM
-#define TEST_3_PIN       17 // HE4 Not PWM
+  // General On/Off Pins (Uses the heater ports!)
+    // #define USE_GEN_PINS       // Enables the use of heaters as general power switches
 
-//Pressure Regulator Pins
-#undef FIL_RUNOUT_PIN       // Pin 4
-#undef SERVO2_PIN           // Pin 5
-#undef SERVO1_PIN           // Pin 6
-#define REG_1_PIN         4 // HE5 PWM
-#define REG_2_PIN         5 // HE6 PWM
-#define REG_3_PIN         6 // HE7 PWM
+    // #define GEN_0_PIN    10 // HE1 PWM
+    // #define GEN_1_PIN     9 // HE2 PWM
+    // #define GEN_2_PIN    16 // HE3 PWM Uncontrollable
+    // #define GEN_3_PIN    17 // HE4 PWM Uncontrollable
+    // #define GEN_4_PIN     4 // HE5 PWM
+    // #define GEN_5_PIN     5 // HE6 PWM
+    // #define GEN_6_PIN     6 // HE7 PWM
+    // #define GEN_7_PIN    11 // HE8 PWM Uncontrollable
 
-#define TEST_7_PIN       11 // HE8 Tied to internal clock
+  // Heater PWM Pins (MOSFET: Use - terminal as signal end; Reverse Logic)
+    #undef FIL_RUNOUT_PIN      // Pin 4
+    #undef SERVO2_PIN          // Pin 5
+    #undef SERVO1_PIN          // Pin 6
+    #define PWM_0_PIN        4 // HE5 PWM
+    #define PWM_1_PIN        5 // HE6 PWM
+    #define PWM_2_PIN        6 // HE7 PWM
 
-//Valve Pins
-#define TEST_8_PIN        2 // X_MAX PWM
-#define VALVE_1_PIN       7 // LCD PWM
-#define VALVE_2_PIN      44 // LCD PWM
-#define VALVE_3_PIN      45 // LCD PWM
+  // 5V PWM Pins
+    #define PWM_3_PIN        7 // D7  PWM Valve 0
+    #define PWM_4_PIN       44 // D44 PWM Valve 1
+    #define PWM_5_PIN       45 // D45 PWM Valve 2
+    #define PWM_6_PIN        2 // X_MAX PWM
+
 
 
 #undef FAN_PIN
-#define FAN_PIN             11   // Part Cooling System
+#define FAN_PIN              11 // (was Pin 6) Part Cooling System
 
-#define CONTROLLERFAN_PIN   -1 // 4 // Pin used for the fan to cool motherboard (-1 to disable)
+#ifndef CONTROLLER_FAN_PIN
+  #define CONTROLLER_FAN_PIN -1 // (was Pin 4) Pin used for the fan to cool motherboard (-1 to disable)
+#endif
 
 // Fans/Water Pump to cool the hotend cool side.
-#define ORIG_E0_AUTO_FAN_PIN 11 //5
-#define ORIG_E1_AUTO_FAN_PIN 11 //5
-#define ORIG_E2_AUTO_FAN_PIN 11 //5
-#define ORIG_E3_AUTO_FAN_PIN 11 //5
+#define ORIG_E0_AUTO_FAN_PIN  11 //5
+#define ORIG_E1_AUTO_FAN_PIN  11 //5
+#define ORIG_E2_AUTO_FAN_PIN  11 //5
+#define ORIG_E3_AUTO_FAN_PIN  11 //5
 
 //
 // LCD / Controller
@@ -156,8 +177,37 @@
 
 #if ENABLED(VIKI2) || ENABLED(miniVIKI)
   #undef SD_DETECT_PIN
-  #define SD_DETECT_PIN    49 // For easy adapter board
+  #define SD_DETECT_PIN    49   // For easy adapter board
+  #undef BEEPER_PIN
+  #define  BEEPER_PIN      12   // 33 isn't physically available to the LCD display
 #else
   #define STAT_LED_RED_PIN 32
   #define STAT_LED_BLUE_PIN 35
 #endif
+
+//
+// Misc. Functions
+//
+#if ENABLED(CASE_LIGHT_ENABLE)  && PIN_EXISTS(CASE_LIGHT) && defined(DOGLCD_A0) && DOGLCD_A0 == CASE_LIGHT_PIN
+  #undef DOGLCD_A0            // Steal pin 44 for the case light; if you have a Viki2 and have connected it
+  #define DOGLCD_A0        57 // following the Panucatt wiring diagram, you may need to tweak these pin assignments
+                              // as the wiring diagram uses pin 44 for DOGLCD_A0
+#endif
+
+//
+// M3/M4/M5 - Spindle/Laser Control
+//
+#undef SPINDLE_LASER_PWM_PIN    // Definitions in pins_RAMPS.h are no good with the AzteegX3pro board
+#undef SPINDLE_LASER_ENABLE_PIN
+#undef SPINDLE_DIR_PIN
+
+#if ENABLED(SPINDLE_LASER_ENABLE)   // use EXP2 header
+  #if ENABLED(VIKI2) || ENABLED(miniVIKI)
+    #undef BTN_EN2
+    #define BTN_EN2             31  // need 7 for the spindle speed PWM
+  #endif
+  #define SPINDLE_LASER_PWM_PIN     7  // must have a hardware PWM
+  #define SPINDLE_LASER_ENABLE_PIN 20  // Pin should have a pullup!
+  #define SPINDLE_DIR_PIN          21
+#endif
+

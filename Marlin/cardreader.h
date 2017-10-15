@@ -167,6 +167,7 @@ private:
 extern CardReader card;
 
 #define IS_SD_PRINTING (card.sdprinting)
+#define IS_SD_FILE_OPEN (card.isFileOpen())
 
 #if PIN_EXISTS(SD_DETECT)
   #if ENABLED(SD_DETECT_INVERTED)
@@ -182,7 +183,8 @@ extern CardReader card;
 #else
 
 #define IS_SD_PRINTING (false)
+#define IS_SD_FILE_OPEN (false)
 
-#endif //SDSUPPORT
+#endif // SDSUPPORT
 
-#endif //__CARDREADER_H
+#endif // __CARDREADER_H
