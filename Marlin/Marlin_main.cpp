@@ -9242,7 +9242,7 @@ inline void gcode_M400() { stepper.synchronize(); }
 // LBL Custom MCommands
   // M430: Make pulse (Using the 5V PWMs)
   inline void gcode_M430() {
-    int pulse_usec = 350; //Default to 300 usecs
+    int pulse_usec = 350; //Default to 350 usecs
     if (parser.seen('S')){
       pulse_usec = parser.value_int();
     }
@@ -9252,6 +9252,7 @@ inline void gcode_M400() { stepper.synchronize(); }
     
     #ifdef PWM_3_PIN
       if (ValveNumber == 0){
+        stepper.synchronize();
         pinMode(PWM_3_PIN, OUTPUT);
         WRITE(PWM_3_PIN, HIGH);
         delayMicroseconds(pulse_usec);
@@ -9261,6 +9262,7 @@ inline void gcode_M400() { stepper.synchronize(); }
 
     #ifdef PWM_4_PIN
       else if (ValveNumber == 1){
+        stepper.synchronize();
         pinMode(PWM_4_PIN, OUTPUT);  
         WRITE(PWM_4_PIN, HIGH);
         delayMicroseconds(pulse_usec);
@@ -9270,6 +9272,7 @@ inline void gcode_M400() { stepper.synchronize(); }
 
     #ifdef PWM_5_PIN
       else if (ValveNumber == 2){
+        stepper.synchronize();
         pinMode(PWM_5_PIN, OUTPUT);
         WRITE(PWM_5_PIN, HIGH);
         delayMicroseconds(pulse_usec);
