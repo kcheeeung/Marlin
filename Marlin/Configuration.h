@@ -500,6 +500,9 @@
 #define Z_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
 
+#define E_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#define E_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
 //#define ENDSTOP_INTERRUPTS_FEATURE

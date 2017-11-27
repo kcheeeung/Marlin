@@ -94,7 +94,9 @@ enum EndstopEnum {
   Y_MAX,
   Z_MAX,
   Z2_MIN,
-  Z2_MAX
+  Z2_MAX,
+  E_MIN,
+  E_MAX
 };
 
 #if ENABLED(EMERGENCY_PARSER)

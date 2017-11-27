@@ -34,9 +34,16 @@ class Endstops {
   public:
 
     static bool enabled, enabled_globally;
-    static volatile char endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value
+//    static volatile char endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value
+    #if defined(E_MIN_PIN) || defined(E_MAX_PIN)
+      static volatile uint16_t
+    #else
+      static volatile char
+    #endif
+        endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value    
+    
 
-    #if ENABLED(Z_DUAL_ENDSTOPS)
+    #if ENABLED(Z_DUAL_ENDSTOPS) || defined(E_MIN_PIN) || defined(E_MAX_PIN)
       static uint16_t
     #else
       static byte

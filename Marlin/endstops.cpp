@@ -39,9 +39,15 @@ Endstops endstops;
 // public:
 
 bool Endstops::enabled, Endstops::enabled_globally; // Initialized by settings.load()
-volatile char Endstops::endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value
 
-#if ENABLED(Z_DUAL_ENDSTOPS)
+#if defined(E_MIN_PIN) || defined(E_MAX_PIN)
+  volatile uint16_t
+#else
+  volatile char
+#endif
+    Endstops::endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value
+
+#if ENABLED(Z_DUAL_ENDSTOPS) || defined(E_MIN_PIN) || defined(E_MAX_PIN)
   uint16_t
 #else
   byte
@@ -130,21 +136,40 @@ void Endstops::init() {
       SET_INPUT(Z_MIN_PROBE_PIN);
     #endif
   #endif
+  
+  #ifdef E_MIN_PIN
+    #if ENABLED(ENDSTOPPULLUP_EMIN)
+      SET_INPUT_PULLUP(E_MIN_PIN);
+    #else
+      // SET_INPUT(E_MIN_PIN);
+      SET_INPUT_PULLUP(E_MIN_PIN);
+    #endif
+  #endif
+  
+  #ifdef E_MAX_PIN
+    #if ENABLED(ENDSTOPPULLUP_EMAX)
+      SET_INPUT_PULLUP(E_MAX_PIN);
+    #else
+      // SET_INPUT(E_MAX_PIN);
+      SET_INPUT_PULLUP(E_MAX_PIN);
+    #endif
+  #endif
 
 } // Endstops::init
 
 void Endstops::report_state() {
   if (endstop_hit_bits) {
+
     #if ENABLED(ULTRA_LCD)
-      char chrX = ' ', chrY = ' ', chrZ = ' ', chrP = ' ';
+      char chrX = ' ', chrY = ' ', chrZ = ' ', chrP = ' ', chrE = ' ';
       #define _SET_STOP_CHAR(A,C) (chr## A = C)
     #else
       #define _SET_STOP_CHAR(A,C) ;
     #endif
 
     #define _ENDSTOP_HIT_ECHO(A,C) do{ \
-      SERIAL_ECHOPAIR(" " STRINGIFY(A) ":", stepper.triggered_position_mm(A ##_AXIS)); \
-      _SET_STOP_CHAR(A,C); }while(0)
+               SERIAL_ECHOPAIR(" " STRINGIFY(A) ":", stepper.triggered_position_mm(A ##_AXIS)); \
+              _SET_STOP_CHAR(A,C); }while(0) 
 
     #define _ENDSTOP_HIT_TEST(A,C) \
       if (TEST(endstop_hit_bits, A ##_MIN) || TEST(endstop_hit_bits, A ##_MAX)) \
@@ -153,12 +178,14 @@ void Endstops::report_state() {
     #define ENDSTOP_HIT_TEST_X() _ENDSTOP_HIT_TEST(X,'X')
     #define ENDSTOP_HIT_TEST_Y() _ENDSTOP_HIT_TEST(Y,'Y')
     #define ENDSTOP_HIT_TEST_Z() _ENDSTOP_HIT_TEST(Z,'Z')
+    #define ENDSTOP_HIT_TEST_E() _ENDSTOP_HIT_TEST(E,'E')
 
     SERIAL_ECHO_START();
     SERIAL_ECHOPGM(MSG_ENDSTOPS_HIT);
     ENDSTOP_HIT_TEST_X();
     ENDSTOP_HIT_TEST_Y();
     ENDSTOP_HIT_TEST_Z();
+    ENDSTOP_HIT_TEST_E();
 
     #if ENABLED(Z_MIN_PROBE_ENDSTOP)
       #define P_AXIS Z_AXIS
@@ -204,6 +231,14 @@ void Endstops::M119() {
   #if HAS_Z_MIN
     SERIAL_PROTOCOLPGM(MSG_Z_MIN);
     SERIAL_PROTOCOLLN(((READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+  #endif
+  #if defined(E_MIN_PIN)
+//    SERIAL_PROTOCOLPGM(MSG_Y_MIN);
+    SERIAL_PROTOCOLLNPAIR("e_min: ", ((READ(E_MIN_PIN)^E_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+  #endif
+  #if defined(E_MAX_PIN)
+//    SERIAL_PROTOCOLPGM(MSG_Y_MAX);
+    SERIAL_PROTOCOLLNPAIR("e_max: ", ((READ(E_MAX_PIN)^E_MAX_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
   #endif
   #if HAS_Z2_MIN
     SERIAL_PROTOCOLPGM(MSG_Z2_MIN);
@@ -445,6 +480,20 @@ void Endstops::update() {
       #endif // Z_MAX_PIN
     }
   }
+    
+  if (stepper.current_block->steps[E_AXIS] > 0) {
+    if (stepper.motor_direction(E_AXIS)) { // -direction
+      #ifdef E_MIN_PIN
+          UPDATE_ENDSTOP(E, MIN);
+      #endif
+    }
+    else { // +direction
+      #ifdef E_MAX_PIN
+          UPDATE_ENDSTOP(E, MAX);
+      #endif
+    }
+  }
+
 
   old_endstop_bits = current_endstop_bits;
 
