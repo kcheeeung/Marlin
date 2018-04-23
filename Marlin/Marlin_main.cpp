@@ -236,6 +236,8 @@
  * M430 - Make pulse
  * M431 - Turn on test pin
  * M432 - Turn off test pin
+ * M433 - DAC/Digital to Analog Converter (MAX521)
+ * M434 - GPIO Remote 8-bit I/O expander (PCF8574)
  * ************* LBL Specific ************* 
  *
  * ************ Custom codes - This can change to suit future G-code regulations
@@ -264,6 +266,9 @@
 #include "duration_t.h"
 #include "types.h"
 #include "gcode.h"
+
+//LBL; I2C for daughter board
+#include "Wire.h"
 
 #if HAS_ABL
   #include "vector_3.h"
@@ -355,6 +360,9 @@
                            && ubl.z_values[0][0] == 0 && ubl.z_values[1][0] == 0 && ubl.z_values[2][0] == 0 )  \
                            || isnan(ubl.z_values[0][0]))
 #endif
+
+const uint8_t DAC_ADDR  = 0x2B;
+const uint8_t GPIO_ADDR = 0x20;
 
 bool Running = true;
 
@@ -771,8 +779,6 @@ void set_current_from_steppers_for_axis(const AxisEnum axis);
       WRITE(PWM_6_PIN, LOW);
     #endif
   }
-
-
 
 #if ENABLED(ARC_SUPPORT)
   void plan_arc(float target[XYZE], float* offset, uint8_t clockwise);
@@ -9406,7 +9412,135 @@ inline void gcode_M400() { stepper.synchronize(); }
     }
   #endif
 
+  /**
+   * M433 DAC/Digital to Analog Converter (MAX521) 
+   * Reference Vout = Vref * N / 256
+   *              N = Vout * 256 / Vref
+   * 
+   * MAX521 I2C Address  = 0b0101011 (binary address)
+   * 
+   * 256/12=21.333, 256/24=10.667, 256/5 = 51.2
+   *
+   */
+  inline void gcode_M433() {
+    int channel = 0; //00000000
 
+    if (parser.seen('V')) {
+      float voltage = parser.value_float();
+
+      if (voltage > 0.0 && voltage < 5.0) {
+        int N = (int) round(voltage * 51.2);
+        Wire.beginTransmission(DAC_ADDR); //0101011
+        Wire.write(channel);
+        Wire.write(N);
+        int out = Wire.endTransmission();
+        
+        if (out != 0) {
+          SERIAL_ECHOLNPGM("Failed to transmit on I2C:");
+          switch (out) {
+            case 1:
+              SERIAL_ECHOLNPGM("data too long to fit in transmit buffer");
+              break;
+            case 2:
+              SERIAL_ECHOLNPGM("received NACK on transmit of address");
+              break;
+            case 3:
+              SERIAL_ECHOLNPGM("received NACK on transmit of data");
+              break;
+            case 4:
+              SERIAL_ECHOLNPGM("other error");
+              break;
+          }
+        } //error message
+        return;
+      }
+      else if (voltage == 5.0) {
+        Wire.beginTransmission(DAC_ADDR); //0101011
+        Wire.write(channel);
+        Wire.write(255);
+        return;
+      }
+    }
+  }
+
+  /**
+   * M434 GPIO Remote 8-bit I/O expander (PCF8574)
+   * 
+   * PCF8574 I2C Address = 0x20, 0100000  (binary)
+   *         write mode  = 0x40, 01000000 (0 = write)
+   *         read mode   = 0x41, 01000001 (1 = read)
+   *
+   *         register    = P7 P6 P5 P4 P3 P2 P1 P0
+   *
+   */
+  inline void gcode_M434() {
+    int pulse_usec, GPIO_REGISTER;
+    if (parser.seen('S')) {
+      pulse_usec = parser.value_int();
+    }
+    if (parser.seen('P')) {
+      GPIO_REGISTER = parser.value_int();
+    }
+
+    if (GPIO_REGISTER == 0) {
+      Wire.beginTransmission(GPIO_ADDR); //1000000
+      Wire.write(0x1);                   //00000001
+      Wire.endTransmission();
+      Wire.beginTransmission(GPIO_ADDR);
+      Wire.write(0x1);
+      delayMicroseconds(pulse_usec);
+      int out = Wire.endTransmission();
+
+      if (out != 0) {
+        SERIAL_ECHOLNPGM("Failed to transmit on I2C:");
+        switch (out) {
+          case 1:
+            SERIAL_ECHOLNPGM("data too long to fit in transmit buffer");
+            break;
+          case 2:
+            SERIAL_ECHOLNPGM("received NACK on transmit of address");
+            break;
+          case 3:
+            SERIAL_ECHOLNPGM("received NACK on transmit of data");
+            break;
+          case 4:
+            SERIAL_ECHOLNPGM("other error");
+            break;
+        }
+      } //error message
+      return;
+    }
+    else if (GPIO_REGISTER == 1) {
+      Wire.beginTransmission(GPIO_ADDR); //1000000
+      Wire.write(0x2);                   //00000010
+      Wire.endTransmission();
+      Wire.beginTransmission(GPIO_ADDR);
+      Wire.write(0x2);
+      delayMicroseconds(pulse_usec);
+      Wire.endTransmission();
+      return;
+    }
+    else if (GPIO_REGISTER == 2) {
+      Wire.beginTransmission(GPIO_ADDR); //1000000
+      Wire.write(0x4);                   //00000100
+      Wire.endTransmission();
+      Wire.beginTransmission(GPIO_ADDR);
+      Wire.write(0x4);
+      delayMicroseconds(pulse_usec);
+      Wire.endTransmission();
+      return;
+    }
+    else if (GPIO_REGISTER == 3) {
+      Wire.beginTransmission(GPIO_ADDR); //1000000
+      Wire.write(0x8);                   //00001000
+      Wire.endTransmission();
+      Wire.beginTransmission(GPIO_ADDR);
+      Wire.write(0x8);
+      delayMicroseconds(pulse_usec);
+      Wire.endTransmission();
+      return;
+    }
+  }
 
 #if HAS_BED_PROBE
 
@@ -11634,7 +11768,12 @@ void process_next_command() {
           gcode_M432();
         break;
       #endif
-
+      case 433:
+        gcode_M433();
+        break;
+       case 434:
+         gcode_M434();
+         break;
 
 
       #if HAS_BED_PROBE
@@ -13569,6 +13708,7 @@ void setup() {
   // LBL Function Calls
     setup_initHEATER_PWM_OFF();
     setup_init5V_PWM_OFF();
+    Wire.begin();
 
 
 
