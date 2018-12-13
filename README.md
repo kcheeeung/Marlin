@@ -11,7 +11,7 @@ Thank you everyone for your hard work and decidation to the project. We wouldn't
 ### Project Leads
  - Kevin Cheung, Class of 2016
  - Maaz Khurram, Class of 2017
- - Kuldeep Bista, Class of 2017
+ - Kuldeep Bista, Class of 2018
 
 ### Mechanical Engineering
  - Wufeng Luo, Class of 2017
@@ -26,7 +26,7 @@ Thank you everyone for your hard work and decidation to the project. We wouldn't
  - Randall White, Class of 2018
 
 ### Electrical Engineering
- - Kevin Zheng, Class of 2018
+ - Kevin Zheng, Class of 2019
 
 ### Bioengineering
  - James Huang, Class of 2016
