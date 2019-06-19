@@ -8,7 +8,7 @@ In collaboration with University of California, Berkeley and Lawerence Berkeley 
 
 In this variant of the Marlin firmware, our modifications make it possible to reconfigure any Arduino based 3D printer board and transform it into a printer capable of tissue extrusion. Marlin 1.1.x represents an evolutionary leap over Marlin 1.0.2. It is the result of over two years of effort by several volunteers around the world who have paid meticulous and sometimes obsessive attention to every detail. For this release we focused on code quality, performance, stability, and overall user experience. Several new features have also been added, many of which require no extra hardware.
 
-<img src="img/cal_print.jpg" alt="cal_print" width="100%"/>
+<img src="img/calprint.jpg" alt="cal_print" width="100%"/>
 A sample demonstration with the Cal logo.
 
 ## Credits
