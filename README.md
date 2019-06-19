@@ -1,6 +1,6 @@
 # Marlin 3D Bioprinter Firmware 
 
-## Introduction (video)
+## Introduction [(video)](https://www.youtube.com/watch?v=z3U78GH7qu8)
 <a href="https://www.youtube.com/watch?v=z3U78GH7qu8" target="_blank"><img src="img/thumbnail_video.JPG" alt="video" width="100%"/></a>
 
 ## 3D Bioprinting 
