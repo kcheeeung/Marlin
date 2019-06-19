@@ -1,7 +1,7 @@
 # Marlin 3D Bioprinter Firmware 
 
 ## Introduction (video)
-<a href="https://www.youtube.com/watch?v=z3U78GH7qu8" target="_blank"><img src="img/thumbnail_video.jpg" alt="video" width="100%"/></a>
+<a href="https://www.youtube.com/watch?v=z3U78GH7qu8" target="_blank"><img src="img/thumbnail_video.JPG" alt="video" width="100%"/></a>
 
 ## 3D Bioprinting 
 In collaboration with University of California, Berkeley and Lawerence Berkeley National Laboratory, we plan to revolutionize the way researchers conduct studies by producing a printer capable of printing the cancer microenvironment, focusing especially on the vascularization of constructs. We plan to advance technological access and resources to researchers and students across the bay area and UC Berkeley. Our design philosophy and approach revolves around three basic principles of simplicity, elegance, and functionality.
