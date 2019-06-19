@@ -1,12 +1,15 @@
 # Marlin 3D Bioprinter Firmware 
 
 ## Introduction (video)
-<a href="https://www.youtube.com/watch?v=z3U78GH7qu8" target="_blank"><img src="img/thumbnail_video.JPG" alt="video" height="50%"/></a>
+<a href="https://www.youtube.com/watch?v=z3U78GH7qu8" target="_blank"><img src="img/thumbnail_video.jpg" alt="video" width="100%"/></a>
 
 ## 3D Bioprinting 
 In collaboration with University of California, Berkeley and Lawerence Berkeley National Laboratory, we plan to revolutionize the way researchers conduct studies by producing a printer capable of printing the cancer microenvironment, focusing especially on the vascularization of constructs. We plan to advance technological access and resources to researchers and students across the bay area and UC Berkeley. Our design philosophy and approach revolves around three basic principles of simplicity, elegance, and functionality.
 
 In this variant of the Marlin firmware, our modifications make it possible to reconfigure any Arduino based 3D printer board and transform it into a printer capable of tissue extrusion. Marlin 1.1.x represents an evolutionary leap over Marlin 1.0.2. It is the result of over two years of effort by several volunteers around the world who have paid meticulous and sometimes obsessive attention to every detail. For this release we focused on code quality, performance, stability, and overall user experience. Several new features have also been added, many of which require no extra hardware.
+
+<img src="cal_print.jpg" alt="cal_print" width="100%"/>
+A sample demonstration with the Cal logo.
 
 ## Credits
 Thank you everyone for your hard work and decidation to the project. We wouldn't have gotten this far without all your help.
